@@ -5,3 +5,4 @@ node_modules
 !.yarn/releases
 !.yarn/plugins
 *.log
+.idea
