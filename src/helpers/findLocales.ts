@@ -7,24 +7,44 @@ import { generateFilesPaths } from './files';
 export const generateLocalesPathAndCodes = async (
   path: string,
   allowedLocaleTypes: string[],
-  exclude?: string | string[],
+  options: {
+    exclude?: string | string[],
+    include?: string | string[],
+  } = {},
 ): Promise<LocalesPathAndCodes> => {
   const localesPath = `${process.cwd()}/${path}`;
+
+  const excludedCodes: string[] = options.exclude ? (Array.isArray(options.exclude) ? options.exclude : [options.exclude]) : [];
+  const includedCodes: string[] = options.include ? (Array.isArray(options.include) ? options.include : [options.include]) : [];
+
   const localesFiles = await generateFilesPaths(localesPath, allowedLocaleTypes);
-  const localesFilePaths: string[] = [...localesFiles].filter((v) => !v.includes('/index.js'));
+  const localesFilePaths: string[] = [...localesFiles]
+    .filter((v) => {
+      if (v.includes('/index.js')) {
+        return false;
+      }
+
+      if (!excludedCodes.length && !includedCodes.length) {
+        return true;
+      }
+
+      return excludedCodes.length
+        ? !excludedCodes.some((code: string) => v.includes(`/${code}.`))
+        : includedCodes.some((code: string) => v.includes(`/${code}.`));
+    });
 
   const localesCodes = readdirSync(localesPath, { withFileTypes: true })
     .filter((file: any) => {
       if (!file.isDirectory()) {
         return false;
       }
-      if (!exclude) {
+      if (!excludedCodes.length && !includedCodes.length) {
         return true
       }
 
-      const excludedCodes: string[] = Array.isArray(exclude) ? exclude : [exclude];
-
-      return !excludedCodes.includes(file.name);
+      return excludedCodes.length
+        ? !excludedCodes.includes(file.name)
+        : includedCodes.includes(file.name);
     })
     .map((dir: any) => dir.name);
 
