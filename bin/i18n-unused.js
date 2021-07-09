@@ -3,7 +3,10 @@ const { program } = require('commander');
 
 const { description, version } = require('../package.json');
 
-const { displayUnusedTranslations } = require('../dist/i18n-unused.umd');
+const {
+  displayUnusedTranslations,
+  syncTranslations,
+} = require('../dist/i18n-unused.umd');
 
 program.description(description);
 
@@ -18,7 +21,7 @@ program
 program
   .command('display-unused')
   .description('output table with unused translations')
-  .action(() => displayUnusedTranslations(program.opts()));
+  .action(displayUnusedTranslations);
 
 program
   .command('mark-unused')
@@ -36,8 +39,8 @@ program
   .action(displayUnusedTranslations);
 
 program
-  .command('sync <source> [targe]')
+  .command('sync source target')
   .description('sync translations')
-  .action(displayUnusedTranslations);
+  .action(syncTranslations);
 
 program.parse(process.argv);
