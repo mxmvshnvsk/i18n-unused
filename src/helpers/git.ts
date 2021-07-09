@@ -7,7 +7,11 @@ export const checkUncommittedChanges = () => {
 
   if (result) {
     console.log(MAGENTA, 'Working tree is dirty: you might want to commit your changes before running the script');
+
+    return true;
   } else {
     console.log(GREEN, 'Working tree is clean');
+
+    return false;
   }
 };
