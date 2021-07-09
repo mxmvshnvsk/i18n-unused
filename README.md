@@ -1,2 +1,2 @@
 # i18n-unused
-Tool to find, analyze and remove unused i18n translations in your JavaScript project
+Tool to find, analyze, sync, update and remove unused and missed i18n translations in your JavaScript project

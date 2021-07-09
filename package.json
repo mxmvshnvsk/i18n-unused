@@ -1,10 +1,15 @@
 {
   "name": "i18n-unused",
   "version": "0.0.1",
-  "description": "Tool to find, analyze and remove unused i18n translations in your JavaScript project",
-  "main": "index.js",
+  "description": "Tool to find, analyze, sync, update and remove unused and missed i18n translations in your JavaScript project",
+  "source": "src/index.ts",
+  "bin": "bin/i18n-unused.js",
+  "main": "dist/i18n-unused.umd.js",
+  "module": "dist/i18n-unused.modern.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "microbundle --target node -f umd,modern"
   },
   "repository": {
     "type": "git",
@@ -21,6 +26,10 @@
   "homepage": "https://github.com/mxmvshnvsk/i18n-unused#readme",
   "devDependencies": {
     "jest": "^27.0.6",
+    "microbundle": "^0.13.3",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "commander": "^8.0.0"
   }
 }
