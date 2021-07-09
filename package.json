@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "microbundle --target node -f umd,modern"
+    "build": "rm -rf dist && microbundle --target node -f umd,modern"
   },
   "repository": {
     "type": "git",
