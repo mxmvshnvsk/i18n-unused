@@ -22,7 +22,7 @@ module.exports = {
   extensions: [], // array of files extensions, like ['js', 'ts', 'vue']
   localesExtensions: [], // array of extensions of locales files, like ['js', 'json']
   srcPath: 'src', // path where analyze files
-  localesPath: 'src/locales' // pat, where plased locales files
+  localesPath: 'src/locales' // path, where plased locales files
 };
 ```
 
