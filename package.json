@@ -9,7 +9,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && microbundle --target node -f umd,modern"
+    "build": "rm -rf dist && microbundle --target node -f umd,modern",
+    "prepare" : "npm run build"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
