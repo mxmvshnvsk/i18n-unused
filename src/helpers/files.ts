@@ -1,6 +1,13 @@
 import { readdir } from 'fs/promises';
+import { readFileSync } from 'fs';
 
 import path from 'path';
+
+export const isSubstrInFile = (filePath: string, substr: string): boolean => {
+  const file = readFileSync(filePath).toString();
+
+  return file.includes(substr);
+};
 
 export const generateFilesPaths = async (dir: string, allowedFileTypes: string | string[]): Promise<string | string[]> => {
   const entries = await readdir(dir, { withFileTypes: true });

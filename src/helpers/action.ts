@@ -1,12 +1,16 @@
-import { isTranslationStructure } from './translations';
+import { ApplyFlat } from '../types';
 
-type Action = (source: any, key: string, parent?: any, parentKey?: any) => void;
+export const applyToFlatKey = (source: any, key: string, cb: ApplyFlat, separator: string = '.') => {
+  const separatedKey = key.split(separator);
+  const keyLength = separatedKey.length - 1;
 
-export const applyAction = (source: any, cb: Action, parent?: any, parentKey?: string) => Object
-  .keys(source).forEach((key) => {
-    if (isTranslationStructure(source[key])) {
-      applyAction(source[key], cb, source, key);
+  separatedKey.reduce((acc, _k, i) => {
+    if (i === keyLength) {
+      cb(acc, _k);
     } else {
-      cb(source, key, parent, parentKey);
+      acc = acc[_k];
     }
-  });
+
+    return acc;
+  }, source);
+};

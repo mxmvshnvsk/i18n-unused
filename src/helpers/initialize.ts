@@ -25,5 +25,9 @@ export const initialize = (inlineOptions: RunOptions): RunOptions => {
     config.localesExtensions = ['json'];
   }
 
+  if (!config.marker) {
+    config.marker = '[UNUSED]';
+  }
+
   return config;
 }
