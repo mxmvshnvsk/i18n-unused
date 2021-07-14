@@ -6,6 +6,9 @@ import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
 import { generateLocalesPathAndCodes } from '../helpers/findLocales';
 import { applyToFlatKey } from '../helpers/action';
+import { checkUncommittedChanges } from '../helpers/git';
+
+import { GREEN } from '../helpers/consoleColor';
 
 export const markUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = initialize(options);
@@ -21,6 +24,8 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     config.extensions,
   );
 
+  checkUncommittedChanges();
+
   unusedTranslationsCollect.forEach((collect) => {
     const locale = require(collect.path);
 
@@ -29,6 +34,8 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     }));
 
     writeFileSync(collect.path, JSON.stringify(locale, null, 2));
+
+    console.log(GREEN, `Successfully marked: ${collect.path}`);
   });
 
   return unusedTranslationsCollect;

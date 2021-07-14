@@ -7,6 +7,8 @@ import { collectUnusedTranslations } from '../helpers/translations';
 import { generateLocalesPathAndCodes } from '../helpers/findLocales';
 import { applyToFlatKey } from '../helpers/action';
 
+import { GREEN } from '../helpers/consoleColor';
+
 export const removeUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = initialize(options);
 
@@ -29,6 +31,8 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
     }));
 
     writeFileSync(collect.path, JSON.stringify(locale, null, 2));
+
+    console.log(GREEN, `Successfully removed: ${collect.path}`);
   });
 
   return unusedTranslationsCollect;
