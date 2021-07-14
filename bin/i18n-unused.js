@@ -5,6 +5,7 @@ const { description, version } = require('../package.json');
 
 const {
   displayUnusedTranslations,
+  removeUnusedTranslations,
   markUnusedTranslations,
   syncTranslations,
 } = require('../dist/i18n-unused.umd');
@@ -32,7 +33,7 @@ program
 program
   .command('remove-unused')
   .description('remove unused translations')
-  .action(displayUnusedTranslations);
+  .action(removeUnusedTranslations);
 
 program
   .command('display-missed')
