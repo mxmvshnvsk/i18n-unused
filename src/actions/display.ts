@@ -1,13 +1,10 @@
-import { readFileSync } from 'fs';
-
-import { RunOptions } from '../types';
+import { RunOptions, UnusedCollect } from '../types';
 
 import { initialize } from '../helpers/initialize';
+import { collectUnusedTranslations } from '../helpers/translations';
 import { generateLocalesPathAndCodes } from '../helpers/findLocales';
-import { generateFilesPaths } from '../helpers/files';
-import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
 
-export const displayUnusedTranslations = async (options: RunOptions) => {
+export const displayUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = initialize(options);
 
   const { localesFilePaths } = await generateLocalesPathAndCodes(
@@ -15,23 +12,17 @@ export const displayUnusedTranslations = async (options: RunOptions) => {
     config.localesExtensions,
   );
 
-  for (const localePath of localesFilePaths) {
-    const locale = require(localePath);
-    const translationsKeys = generateTranslationsFlatKeys(locale);
-    const filesPaths = await generateFilesPaths(`${process.cwd()}/${config.srcPath}`, config.extensions);
+  const unusedTranslationsCollect = await collectUnusedTranslations(
+    localesFilePaths,
+    `${process.cwd()}/${config.srcPath}`,
+    config.extensions,
+  );
 
-    [...filesPaths].forEach((filePath: string) => {
-      const file = readFileSync(filePath).toString();
-
-      [...translationsKeys].forEach((key: string) => {
-        if (file.includes(key)) {
-          translationsKeys.splice(translationsKeys.indexOf(key), 1);
-        }
-      });
-    });
-
+  unusedTranslationsCollect.forEach((collect) => {
     console.log('<<<==========================================================>>>');
-    console.log(`Unused locales in: ${localePath}`);
-    console.table(translationsKeys.map((key: string) => ({ 'Translation': key })));
-  }
+    console.log(`Unused locales in: ${collect.path}`);
+    console.table(collect.keys.map((key: string) => ({ 'Translation': key })));
+  });
+
+  return unusedTranslationsCollect;
 };
