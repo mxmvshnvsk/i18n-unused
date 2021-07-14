@@ -1,13 +1,13 @@
 import { writeFileSync } from 'fs';
 
-import { RunOptions } from '../types';
+import { RunOptions, UnusedCollect } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
 import { generateLocalesPathAndCodes } from '../helpers/findLocales';
 import { applyToFlatKey } from '../helpers/action';
 
-export const markUnusedTranslations = async (options: RunOptions) => {
+export const markUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = initialize(options);
 
   const { localesFilePaths } = await generateLocalesPathAndCodes(
@@ -30,4 +30,6 @@ export const markUnusedTranslations = async (options: RunOptions) => {
 
     writeFileSync(collect.path, JSON.stringify(locale, null, 2));
   });
+
+  return unusedTranslationsCollect;
 };
