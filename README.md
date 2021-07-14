@@ -1,4 +1,8 @@
 # i18n-unused
+
+<img alt="npm" src="https://img.shields.io/npm/v/i18n-unused?color=red&label=version">
+<img alt="npm" src="https://img.shields.io/npm/dw/i18n-unused">
+
 Tool to find, analyze, sync, update and remove unused and missed i18n translations in your JavaScript project.
 
 ## Installation
