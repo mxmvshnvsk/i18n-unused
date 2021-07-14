@@ -5,6 +5,7 @@ const { description, version } = require('../package.json');
 
 const {
   displayUnusedTranslations,
+  markUnusedTranslations,
   syncTranslations,
 } = require('../dist/i18n-unused.umd');
 
@@ -25,8 +26,8 @@ program
 
 program
   .command('mark-unused')
-  .description('mark unused translations via [UNUSED]')
-  .action(displayUnusedTranslations);
+  .description('mark unused translations via [UNUSED] or your marker from config')
+  .action(markUnusedTranslations);
 
 program
   .command('remove-unused')
