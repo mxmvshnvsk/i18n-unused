@@ -24,7 +24,9 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     config.extensions,
   );
 
-  checkUncommittedChanges();
+  if (config.gitCheck) {
+    checkUncommittedChanges();
+  }
 
   unusedTranslationsCollect.forEach((collect) => {
     const locale = require(collect.path);

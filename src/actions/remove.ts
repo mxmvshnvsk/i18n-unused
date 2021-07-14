@@ -6,6 +6,7 @@ import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
 import { generateLocalesPathAndCodes } from '../helpers/findLocales';
 import { applyToFlatKey } from '../helpers/action';
+import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
 
@@ -22,6 +23,10 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
   );
+
+  if (config.gitCheck) {
+    checkUncommittedChanges();
+  }
 
   unusedTranslationsCollect.forEach((collect) => {
     const locale = require(collect.path);

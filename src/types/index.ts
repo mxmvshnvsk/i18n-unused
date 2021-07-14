@@ -5,6 +5,7 @@ export type RunOptions = {
   localesExtensions: string[],
   excludeKey?: string[],
   marker?: string,
+  gitCheck?: boolean,
 };
 
 export type LocalesPathAndCodes = {
