@@ -19,23 +19,20 @@ Add config `i18n-unused.config.js` to your root folder:
 
 ```javascript
 module.exports = {
-  // array of files extensions, like ['js', 'vue'],
-  // by default ['js', 'ts', 'jsx', 'tsx', 'vue']
-  extensions: [],
-  // array of extensions of locales files, like ['js', 'json'],
-  // by default ['json']
-  localesExtensions: [],
+  // array of files extensions, like ['js', 'vue']
+  extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  // array of extensions of locales files, like ['js', 'json']
+  localesExtensions: ['json'],
   // path where analyze files
   srcPath: 'src',
   // path, where plased locales files
   localesPath: 'src/locales',
   // if substring contain key, it'll ignore
   excludeKey: '.props.',
-  // custom marker for unused translations,
-  // by defaul [UNUSED],
-  marker: 'UNUSED_MARKER',
-  // check git log status, false by default
-  gitCheck: true
+  // custom marker for unused translations
+  marker: '[UNUSED]',
+  // check git log status
+  gitCheck: false
 };
 ```
 
