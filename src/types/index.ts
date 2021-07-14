@@ -4,6 +4,7 @@ export type RunOptions = {
   srcPath: string,
   localesExtensions: string[],
   excludeKey?: string[],
+  marker?: string,
 };
 
 export type LocalesPathAndCodes = {
@@ -11,3 +12,7 @@ export type LocalesPathAndCodes = {
   localesCodes: string[],
   localesFilePaths: string[],
 };
+
+export type ApplyFlat = (source: any, key: string) => void;
+
+export type UnusedCollect = { path: string, keys: string[] }[];
