@@ -74,7 +74,7 @@ If you use tool in code, you can run `collectUnusedTranslations`, return `Promis
 ```javascript
 import { collectUnusedTranslations } from 'i18n-unused';
 
-const handleTransltions = async () => {
+const handleTranslations = async () => {
   // return: [{ path: 'locale_file_path', keys: ['unused_keys'] }]
   const unusedCollect = await collectUnusedTranslations(
     paths, // paths to locale files
