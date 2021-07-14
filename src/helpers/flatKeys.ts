@@ -1,4 +1,4 @@
-const isTranslationStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
+import { isTranslationStructure } from './translations';
 
 export const generateTranslationsFlatKeys = (source: any, parent: string = '', keys: string[] = []): string[] => {
   Object.keys(source).forEach((key) => {
