@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version)
 ![npm](https://img.shields.io/npm/dw/i18n-unused?color=green)
 
-Tool to find, analyze, sync, update and remove unused and missed i18n translations in your JavaScript project.
+The tool for finding, analyzing and removing unused i18n translations in your JavaScript project.
 
 ## Installation
 
