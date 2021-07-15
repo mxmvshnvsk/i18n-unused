@@ -3,6 +3,8 @@ import { readFileSync } from 'fs';
 
 import path from 'path';
 
+export const getFileSizeKb = (str: string): number => Buffer.byteLength(str, 'utf8') / 1000;
+
 export const isSubstrInFile = (filePath: string, substr: string): boolean => {
   const file = readFileSync(filePath).toString();
 
