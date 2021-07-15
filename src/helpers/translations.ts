@@ -25,7 +25,7 @@ export const collectUnusedTranslations = async (paths: string[], srcPath: string
       });
     });
 
-    collect.push({ path: localePath, keys: translationsKeys });
+    collect.push({ path: localePath, keys: translationsKeys, count: translationsKeys.length });
   }
 
   return collect;
