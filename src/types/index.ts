@@ -16,4 +16,4 @@ export type LocalesPathAndCodes = {
 
 export type ApplyFlat = (source: any, key: string) => void;
 
-export type UnusedCollect = { path: string, keys: string[] }[];
+export type UnusedCollect = { path: string, keys: string[], count: number }[];
