@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version)
 ![npm](https://img.shields.io/npm/dw/i18n-unused?color=green)
 
-The tool for finding, analyzing and removing unused i18n translations in your JavaScript project.
+The tool for finding, analyzing and removing unused i18n translations in your JavaScript project
 
 ## Installation
 
@@ -42,7 +42,7 @@ module.exports = {
 
 ## Usage
 
-Get help
+Get help:
 ```bash
 i18n-unused -h
 ```
