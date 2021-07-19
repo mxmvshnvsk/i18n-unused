@@ -1,5 +1,12 @@
 import { RunOptions } from '../types';
 
+const defaultValues: RunOptions = {
+  extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  localesExtensions: ['json'],
+  marker: '[UNUSED]',
+  localeModuleResolver: (m: any): any => m.default,
+};
+
 export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions> => {
   let config: RunOptions = { ...inlineOptions };
 
@@ -17,17 +24,5 @@ export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions>
     throw new Error('Src path is required');
   }
 
-  if (!config.extensions) {
-    config.extensions = ['js', 'ts', 'jsx', 'tsx', 'vue'];
-  }
-
-  if (!config.localesExtensions) {
-    config.localesExtensions = ['json'];
-  }
-
-  if (!config.marker) {
-    config.marker = '[UNUSED]';
-  }
-
-  return config;
+  return { ...defaultValues, ...config };
 }
