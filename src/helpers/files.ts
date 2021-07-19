@@ -15,16 +15,17 @@ export const isSubstrInFile = (filePath: string, substr: string): boolean => {
   return file.includes(substr);
 };
 
-export const resolveFile = async (filePath: string, resolver: ModuleResolver): Promise<any> => {
+export const resolveFile = async (filePath: string, resolver: ModuleResolver = (m) => m): Promise<any> => {
+  const [, ext] = filePath.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
   let m = {};
 
-  if (/\.(ts)/.test(filePath)) {
+  if (ext === 'ts') {
     m = await tsImport.compile(filePath);
-  } else if (/\.json/.test(filePath)) {
-    m = require(filePath);
-  } else if (/\.js/.test(filePath)) {
+  } else if (ext === 'js') {
     const r = require('esm')(module/*, options*/)
     m = r(filePath);
+  } else if (ext === 'json') {
+    m = require(filePath);
   }
 
   return resolver(m);
@@ -39,7 +40,9 @@ export const generateFilesPaths = async (dir: string, allowedFileTypes: string |
     return dirent.isDirectory() ? generateFilesPaths(nextPath, allowedFileTypes) : nextPath;
   }));
 
-  return Array.prototype.concat(...files).filter((v) => (
-    allowedFileTypes.includes(path.extname(v).split('.')[1])
-  ));
+  return Array.prototype.concat(...files).filter((v) => {
+    const [, ext] = v.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+
+    return allowedFileTypes.includes(ext);
+  });
 }

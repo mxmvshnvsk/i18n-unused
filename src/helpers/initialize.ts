@@ -1,3 +1,5 @@
+import { resolveFile } from './files';
+
 import { RunOptions } from '../types';
 
 const defaultValues: RunOptions = {
@@ -11,7 +13,7 @@ export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions>
   let config: RunOptions = { ...inlineOptions };
 
   try {
-    const { default: configFile } = await import(`${process.cwd()}/i18n-unused.config.js`);
+    const configFile = await resolveFile(`${process.cwd()}/i18n-unused.config.js`);
 
     config = { ...configFile, ...inlineOptions };
   } catch (e) {}
