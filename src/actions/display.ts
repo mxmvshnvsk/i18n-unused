@@ -6,7 +6,7 @@ import { generateLocalesPathAndCodes } from '../helpers/findLocales';
 import { getFileSizeKb } from '../helpers/files';
 
 export const displayUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
-  const config = initialize(options);
+  const config = await initialize(options);
 
   const { localesFilePaths } = await generateLocalesPathAndCodes(
     config.localesPath,

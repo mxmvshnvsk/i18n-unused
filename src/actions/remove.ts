@@ -11,7 +11,7 @@ import { checkUncommittedChanges } from '../helpers/git';
 import { GREEN } from '../helpers/consoleColor';
 
 export const removeUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
-  const config = initialize(options);
+  const config = await initialize(options);
 
   const { localesFilePaths } = await generateLocalesPathAndCodes(
     config.localesPath,

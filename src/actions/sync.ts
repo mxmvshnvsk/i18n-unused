@@ -24,7 +24,7 @@ const mergeLocaleData = (source: any, target: any) => {
 }
 
 export const syncTranslations = async (source: string, target: string, options: RunOptions) => {
-  const config: RunOptions = initialize(options);
+  const config: RunOptions = await initialize(options);
 
   const { localesFilePaths: [sourcePath, targetPath] } = await generateLocalesPathAndCodes(
     config.localesPath,
