@@ -1,10 +1,10 @@
 import { RunOptions } from '../types';
 
-export const initialize = (inlineOptions: RunOptions): RunOptions => {
+export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions> => {
   let config: RunOptions = { ...inlineOptions };
 
   try {
-    const configFile: RunOptions = require(`${process.cwd()}/i18n-unused.config.js`);
+    const { default: configFile } = await import(`${process.cwd()}/i18n-unused.config.js`);
 
     config = { ...configFile, ...inlineOptions };
   } catch (e) {}
