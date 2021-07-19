@@ -22,6 +22,7 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
     localesFilePaths,
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
+    config.localeModuleResolver,
   );
 
   if (config.gitCheck) {

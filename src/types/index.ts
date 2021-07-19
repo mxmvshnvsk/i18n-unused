@@ -1,11 +1,18 @@
+export type ApplyFlat = (source: any, key: string) => void;
+
+export type UnusedCollect = { path: string, keys: string[], count: number }[];
+
+export type ModuleResolver = (m: any) => any;
+
 export type RunOptions = {
-  extensions: string[],
-  localesPath: string,
-  srcPath: string,
-  localesExtensions: string[],
+  extensions?: string[],
+  localesExtensions?: string[],
+  localesPath?: string,
+  srcPath?: string,
   excludeKey?: string[],
   marker?: string,
   gitCheck?: boolean,
+  localeModuleResolver?: ModuleResolver,
 };
 
 export type LocalesPathAndCodes = {
@@ -13,7 +20,3 @@ export type LocalesPathAndCodes = {
   localesCodes: string[],
   localesFilePaths: string[],
 };
-
-export type ApplyFlat = (source: any, key: string) => void;
-
-export type UnusedCollect = { path: string, keys: string[], count: number }[];

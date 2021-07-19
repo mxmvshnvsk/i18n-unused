@@ -22,6 +22,7 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     localesFilePaths,
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
+    config.localeModuleResolver,
   );
 
   if (config.gitCheck) {

@@ -36,7 +36,10 @@ module.exports = {
   // custom marker for unused translations
   marker: '[UNUSED]',
   // check git log status
-  gitCheck: false
+  gitCheck: false,
+  // function to resolve imports from locale files
+  // here you can resolve named imports
+  localeModuleResolver: (m) => m.default
 };
 ```
 

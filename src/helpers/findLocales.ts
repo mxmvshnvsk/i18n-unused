@@ -20,7 +20,7 @@ export const generateLocalesPathAndCodes = async (
   const localesFiles = await generateFilesPaths(localesPath, allowedLocaleTypes);
   const localesFilePaths: string[] = [...localesFiles]
     .filter((v) => {
-      if (v.includes('/index.js')) {
+      if (v.includes('/index.')) {
         return false;
       }
 

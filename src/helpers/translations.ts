@@ -1,17 +1,22 @@
 import { readFileSync } from 'fs';
 
-import { UnusedCollect } from '../types';
+import { UnusedCollect, ModuleResolver } from '../types';
 
-import { generateFilesPaths } from './files';
+import { generateFilesPaths, resolveFile } from './files';
 import { generateTranslationsFlatKeys } from './flatKeys';
 
 export const isTranslationStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
 
-export const collectUnusedTranslations = async (paths: string[], srcPath: string, extensions: string[]): Promise<UnusedCollect> => {
+export const collectUnusedTranslations = async (
+  paths: string[],
+  srcPath: string,
+  extensions: string[],
+  localeModuleResolver: ModuleResolver,
+): Promise<UnusedCollect> => {
   const collect: UnusedCollect = [];
 
   for (const localePath of paths) {
-    const locale = require(localePath);
+    const locale = await resolveFile(localePath, localeModuleResolver);
     const translationsKeys = generateTranslationsFlatKeys(locale);
     const filesPaths = await generateFilesPaths(srcPath, extensions);
 
