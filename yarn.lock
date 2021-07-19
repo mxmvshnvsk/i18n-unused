@@ -2253,6 +2253,11 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
+esm@^3.2.25:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
+
 esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
@@ -3721,6 +3726,11 @@ optionator@^0.8.1:
     type-check "~0.3.2"
     word-wrap "~1.2.3"
 
+options-defaults@^2.0.39:
+  version "2.0.39"
+  resolved "https://registry.yarnpkg.com/options-defaults/-/options-defaults-2.0.39.tgz#cf944237ae233fc506840fb6fc9eb36c3f89d0cd"
+  integrity sha512-oM3zz6IqQSXodCIpev4WcDIJeCKRLdNobGhZUsN1kKnmNXg18Rfwy7bolWLOwc3farTLRRRtp6qFarhUAa+23A==
+
 p-each-series@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-each-series/-/p-each-series-2.2.0.tgz#105ab0357ce72b202a8a8b94933672657b5e2a9a"
@@ -4786,6 +4796,13 @@ tr46@^2.1.0:
   integrity sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==
   dependencies:
     punycode "^2.1.1"
+
+ts-import@^2.0.39:
+  version "2.0.39"
+  resolved "https://registry.yarnpkg.com/ts-import/-/ts-import-2.0.39.tgz#d2302995f5b713c8d89ab6a692e47da03b266fe4"
+  integrity sha512-untSUsbDnXo9lDiF7ol5sZ301X3UO1moQyJGRVYOorkhmMO9UGZ+KLYGUq68Dti90Xlt/I+AttmvRuAPn7p9Cw==
+  dependencies:
+    options-defaults "^2.0.39"
 
 tslib@2.0.1:
   version "2.0.1"
