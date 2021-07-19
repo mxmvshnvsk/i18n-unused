@@ -12,12 +12,13 @@ export const collectUnusedTranslations = async (
   srcPath: string,
   extensions: string[],
   localeModuleResolver: ModuleResolver,
+  excludeTranslationKey: string | string[],
 ): Promise<UnusedCollect> => {
   const collect: UnusedCollect = [];
 
   for (const localePath of paths) {
     const locale = await resolveFile(localePath, localeModuleResolver);
-    const translationsKeys = generateTranslationsFlatKeys(locale);
+    const translationsKeys = generateTranslationsFlatKeys(locale, { excludeKey: excludeTranslationKey });
     const filesPaths = await generateFilesPaths(srcPath, extensions);
 
     [...filesPaths].forEach((filePath: string) => {

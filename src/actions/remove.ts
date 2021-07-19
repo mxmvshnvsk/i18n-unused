@@ -25,6 +25,7 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
     config.localeModuleResolver,
+    config.excludeKey,
   );
 
   if (config.gitCheck) {

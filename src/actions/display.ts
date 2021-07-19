@@ -20,6 +20,7 @@ export const displayUnusedTranslations = async (options: RunOptions): Promise<Un
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
     config.localeModuleResolver,
+    config.excludeKey,
   );
 
   unusedTranslationsCollect.forEach((collect) => {

@@ -11,7 +11,7 @@ export type RunOptions = {
   localesExtensions?: string[],
   localesPath?: string,
   srcPath?: string,
-  excludeKey?: string[],
+  excludeKey?: string | string[],
   marker?: string,
   gitCheck?: boolean,
   localeNameResolver?: ModuleNameResolver,

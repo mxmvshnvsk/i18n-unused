@@ -3,9 +3,10 @@ import { resolveFile } from './files';
 import { RunOptions } from '../types';
 
 const defaultValues: RunOptions = {
-  extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  excludeKey: '',
   marker: '[UNUSED]',
-  localeModuleResolver: (m: any): any => m.default,
+  extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  localeModuleResolver: (m: any): any => m.default || m,
 };
 
 export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions> => {
