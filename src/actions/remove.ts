@@ -15,7 +15,9 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
 
   const { localesFilePaths } = await generateLocalesPathAndCodes(
     config.localesPath,
-    config.localesExtensions,
+    config.localesExtensions
+      ? { allowedLocaleTypes: config.localesExtensions }
+      : { localeNameResolver: config.localeNameResolver },
   );
 
   const unusedTranslationsCollect = await collectUnusedTranslations(

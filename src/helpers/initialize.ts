@@ -4,7 +4,6 @@ import { RunOptions } from '../types';
 
 const defaultValues: RunOptions = {
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
-  localesExtensions: ['json'],
   marker: '[UNUSED]',
   localeModuleResolver: (m: any): any => m.default,
 };
@@ -24,6 +23,10 @@ export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions>
 
   if (!config.srcPath) {
     throw new Error('Src path is required');
+  }
+
+  if (!config.localesExtensions && !config.localeNameResolver) {
+    throw new Error('"localesExtensions" or "localeNameResolver" is required');
   }
 
   return { ...defaultValues, ...config };

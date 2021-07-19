@@ -2,6 +2,8 @@ export type ApplyFlat = (source: any, key: string) => void;
 
 export type UnusedCollect = { path: string, keys: string[], count: number }[];
 
+export type ModuleNameResolver = RegExp | ((n: string) => boolean)
+
 export type ModuleResolver = (m: any) => any;
 
 export type RunOptions = {
@@ -12,6 +14,7 @@ export type RunOptions = {
   excludeKey?: string[],
   marker?: string,
   gitCheck?: boolean,
+  localeNameResolver?: ModuleNameResolver,
   localeModuleResolver?: ModuleResolver,
 };
 

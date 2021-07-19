@@ -1,13 +1,14 @@
 import { readdirSync } from 'fs';
 
-import { LocalesPathAndCodes } from '../types';
+import { LocalesPathAndCodes, ModuleNameResolver } from '../types';
 
 import { generateFilesPaths } from './files';
 
 export const generateLocalesPathAndCodes = async (
   path: string,
-  allowedLocaleTypes: string[],
   options: {
+    allowedLocaleTypes?: string[],
+    localeNameResolver?: ModuleNameResolver,
     exclude?: string | string[],
     include?: string | string[],
   } = {},
@@ -17,7 +18,7 @@ export const generateLocalesPathAndCodes = async (
   const excludedCodes: string[] = options.exclude ? (Array.isArray(options.exclude) ? options.exclude : [options.exclude]) : [];
   const includedCodes: string[] = options.include ? (Array.isArray(options.include) ? options.include : [options.include]) : [];
 
-  const localesFiles = await generateFilesPaths(localesPath, allowedLocaleTypes);
+  const localesFiles = await generateFilesPaths(localesPath, options.localeNameResolver || options.allowedLocaleTypes);
   const localesFilePaths: string[] = [...localesFiles]
     .filter((v) => {
       if (v.includes('/index.')) {

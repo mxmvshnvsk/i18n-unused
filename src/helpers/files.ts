@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 
 import path from 'path';
 
-import { ModuleResolver } from '../types';
+import { ModuleResolver, ModuleNameResolver } from '../types';
 
 export const getFileSizeKb = (str: string): number => Buffer.byteLength(str, 'utf8') / 1000;
 
@@ -31,18 +31,30 @@ export const resolveFile = async (filePath: string, resolver: ModuleResolver = (
   return resolver(m);
 };
 
-export const generateFilesPaths = async (dir: string, allowedFileTypes: string | string[]): Promise<string | string[]> => {
+export const generateFilesPaths = async (
+  dir: string,
+  fileNameResolver: string[] | ModuleNameResolver,
+): Promise<string | string[]> => {
   const entries = await readdir(dir, { withFileTypes: true });
 
   const files = await Promise.all(entries.map((dirent: any) => {
     const nextPath: string = path.resolve(dir, dirent.name);
 
-    return dirent.isDirectory() ? generateFilesPaths(nextPath, allowedFileTypes) : nextPath;
+    return dirent.isDirectory() ? generateFilesPaths(nextPath, fileNameResolver) : nextPath;
   }));
 
   return Array.prototype.concat(...files).filter((v) => {
-    const [, ext] = v.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+    const name = path.basename(v)
 
-    return allowedFileTypes.includes(ext);
+    if (fileNameResolver instanceof RegExp) {
+      return fileNameResolver.test(name);
+    }
+    if (typeof fileNameResolver === 'function') {
+      return fileNameResolver(name)
+    }
+
+    const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+
+    return fileNameResolver.includes(ext);
   });
 }
