@@ -29,7 +29,8 @@ export const syncTranslations = async (source: string, target: string, options: 
   const { localesFilePaths: [sourcePath, targetPath] } = await generateLocalesPathAndCodes(
     config.localesPath,
     config.localesExtensions
-      ? { allowedLocaleTypes: config.localesExtensions, include: [source, target] }
+      // ? { allowedLocaleTypes: config.localesExtensions, include: [source, target] } @TODO revert when add other types writes
+      ? { allowedLocaleTypes: ['json'], include: [source, target] }
       : { localeNameResolver: config.localeNameResolver, include: [source, target] },
   );
 
