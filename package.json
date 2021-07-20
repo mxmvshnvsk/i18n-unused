@@ -1,6 +1,6 @@
 {
   "name": "i18n-unused",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The tool for finding, analyzing and removing unused i18n translations in your JavaScript project",
   "source": "src/index.ts",
   "bin": "bin/i18n-unused.js",
