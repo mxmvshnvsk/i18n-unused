@@ -7,6 +7,7 @@
   "main": "./dist/i18n-unused.umd.js",
   "module": "./dist/i18n-unused.module.js",
   "exports": "./dist/i18n-unused.modern.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && microbundle --target node",
