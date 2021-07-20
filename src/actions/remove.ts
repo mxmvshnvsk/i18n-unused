@@ -4,7 +4,7 @@ import { RunOptions, UnusedCollect } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
-import { generateLocalesPathAndCodes } from '../helpers/findLocales';
+import { generateLocalesPathsAndCodes } from '../helpers/findLocales';
 import { applyToFlatKey } from '../helpers/action';
 import { checkUncommittedChanges } from '../helpers/git';
 
@@ -13,7 +13,7 @@ import { GREEN } from '../helpers/consoleColor';
 export const removeUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = await initialize(options);
 
-  const { localesFilePaths } = await generateLocalesPathAndCodes(
+  const { localesFilePaths } = await generateLocalesPathsAndCodes(
     config.localesPath,
     config.localesExtensions
       // ? { allowedLocaleTypes: config.localesExtensions } @TODO revert when add other types writes

@@ -3,7 +3,7 @@ import fs from 'fs';
 import { RunOptions } from '../types';
 
 import { initialize } from '../helpers/initialize';
-import { generateLocalesPathAndCodes } from '../helpers/findLocales';
+import { generateLocalesPathsAndCodes } from '../helpers/findLocales';
 import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
@@ -25,8 +25,9 @@ const mergeLocaleData = (source: any, target: any) => {
 
 export const syncTranslations = async (source: string, target: string, options: RunOptions) => {
   const config: RunOptions = await initialize(options);
+  console.log(source, target);
 
-  const { localesFilePaths: [sourcePath, targetPath] } = await generateLocalesPathAndCodes(
+  const { localesFilePaths: [sourcePath, targetPath] } = await generateLocalesPathsAndCodes(
     config.localesPath,
     config.localesExtensions
       // ? { allowedLocaleTypes: config.localesExtensions, include: [source, target] } @TODO revert when add other types writes
@@ -39,7 +40,9 @@ export const syncTranslations = async (source: string, target: string, options: 
 
   const mergedLocale = mergeLocaleData(sourceLocale, targetLocale);
 
-  checkUncommittedChanges();
+  if (config.gitCheck) {
+    checkUncommittedChanges();
+  }
 
   fs.writeFileSync(
     targetPath,

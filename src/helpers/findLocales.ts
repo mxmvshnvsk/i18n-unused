@@ -4,34 +4,37 @@ import { LocalesPathAndCodes, ModuleNameResolver } from '../types';
 
 import { generateFilesPaths } from './files';
 
-export const generateLocalesPathAndCodes = async (
+interface options {
+  allowedLocaleTypes?: string[],
+  localeNameResolver?: ModuleNameResolver,
+  exclude?: string | string[],
+  include?: string | string[],
+}
+
+export const generateLocalesPathsAndCodes = async (
   path: string,
-  options: {
-    allowedLocaleTypes?: string[],
-    localeNameResolver?: ModuleNameResolver,
-    exclude?: string | string[],
-    include?: string | string[],
-  } = {},
+  {
+    allowedLocaleTypes,
+    localeNameResolver,
+    exclude,
+    include,
+  }: options = {},
 ): Promise<LocalesPathAndCodes> => {
   const localesPath = `${process.cwd()}/${path}`;
 
-  const excludedCodes: string[] = options.exclude ? (Array.isArray(options.exclude) ? options.exclude : [options.exclude]) : [];
-  const includedCodes: string[] = options.include ? (Array.isArray(options.include) ? options.include : [options.include]) : [];
+  const excludedLocales: string[] = exclude ? (Array.isArray(exclude) ? exclude : [exclude]) : [];
+  const includedLocales: string[] = include ? (Array.isArray(include) ? include : [include]) : [];
 
-  const localesFiles = await generateFilesPaths(localesPath, options.localeNameResolver || options.allowedLocaleTypes);
+  const localesFiles = await generateFilesPaths(localesPath, localeNameResolver || allowedLocaleTypes);
   const localesFilePaths: string[] = [...localesFiles]
     .filter((v) => {
-      if (v.includes('/index.')) {
-        return false;
-      }
-
-      if (!excludedCodes.length && !includedCodes.length) {
+      if (!excludedLocales.length && !includedLocales.length) {
         return true;
       }
 
-      return excludedCodes.length
-        ? !excludedCodes.some((code: string) => v.includes(`/${code}.`))
-        : includedCodes.some((code: string) => v.includes(`/${code}.`));
+      return excludedLocales.length
+        ? !excludedLocales.some((l: string) => v.includes(`/${l}`))
+        : includedLocales.some((l: string) => v.includes(`/${l}`));
     });
 
   const localesCodes = readdirSync(localesPath, { withFileTypes: true })
@@ -39,13 +42,13 @@ export const generateLocalesPathAndCodes = async (
       if (!file.isDirectory()) {
         return false;
       }
-      if (!excludedCodes.length && !includedCodes.length) {
+      if (!excludedLocales.length && !includedLocales.length) {
         return true
       }
 
-      return excludedCodes.length
-        ? !excludedCodes.includes(file.name)
-        : includedCodes.includes(file.name);
+      return excludedLocales.length
+        ? !excludedLocales.includes(file.name)
+        : includedLocales.includes(file.name);
     })
     .map((dir: any) => dir.name);
 
