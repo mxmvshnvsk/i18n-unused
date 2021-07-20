@@ -23,9 +23,11 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
   const unusedTranslationsCollects = await collectUnusedTranslations(
     localesFilesPaths,
     `${process.cwd()}/${config.srcPath}`,
-    config.extensions,
-    config.localeModuleResolver,
-    config.excludeKey,
+    {
+      extensions: config.extensions,
+      localeModuleResolver: config.localeModuleResolver,
+      excludeTranslationKey: config.excludeKey,
+    },
   );
 
   if (config.gitCheck) {

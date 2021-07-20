@@ -7,12 +7,16 @@ import { generateTranslationsFlatKeys } from './flatKeys';
 
 export const isTranslationStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
 
+interface options {
+  extensions?: string[],
+  localeModuleResolver?: ModuleResolver,
+  excludeTranslationKey?: string | string[],
+}
+
 export const collectUnusedTranslations = async (
   paths: string[],
   srcPath: string,
-  extensions: string[],
-  localeModuleResolver: ModuleResolver,
-  excludeTranslationKey: string | string[],
+  { extensions, localeModuleResolver, excludeTranslationKey }: options,
 ): Promise<UnusedCollects> => {
   const collect: UnusedCollect = [];
 

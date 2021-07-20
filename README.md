@@ -83,9 +83,11 @@ const handleTranslations = async () => {
   const unusedCollects = await collectUnusedTranslations(
     paths, // paths to locale files
     srcPath, // where to search using
-    extensions, // search file extensions, eg. ['ts', 'vue']
-    localeModuleResolver, // resolver for module, (module) => module
-    excludeTranslationKey, // special string or sting[] to exclude flat translations
+    {
+      extensions: ['ts', 'vue'], // optional, search file extensions, eg
+      localeModuleResolver: (module) => module, // optional, resolver for module
+      excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
+    },
   );
 };
 ```
