@@ -4,7 +4,7 @@
   "description": "The tool for finding, analyzing and removing unused i18n translations in your JavaScript project",
   "type": "module",
   "source": "src/index.ts",
-  "bin": "bin/i18n-unused.js",
+  "bin": "bin/i18n-unused.cjs",
   "main": "dist/i18n-unused.cjs",
   "module": "dist/i18n-unused.js",
   "exports": {
