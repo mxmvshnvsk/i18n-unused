@@ -1,6 +1,6 @@
 {
   "name": "i18n-unused",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "The tool for finding, analyzing and removing unused i18n translations in your JavaScript project",
   "source": "src/index.ts",
   "bin": "bin/i18n-unused.js",
@@ -8,7 +8,9 @@
   "module": "./dist/i18n-unused.module.js",
   "exports": "./dist/i18n-unused.modern.js",
   "types": "./dist/index.d.ts",
-  "files": ["*"],
+  "files": [
+    "*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && microbundle --target node",
