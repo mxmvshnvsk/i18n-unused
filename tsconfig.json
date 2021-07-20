@@ -2,11 +2,11 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
-    "target": "ES2020",
+    "target": "ESNext",
     "noImplicitAny": true,
     "declaration": true,
     "emitDecoratorMetadata": true,

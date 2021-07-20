@@ -2,11 +2,15 @@
   "name": "i18n-unused",
   "version": "0.1.5",
   "description": "The tool for finding, analyzing and removing unused i18n translations in your JavaScript project",
+  "type": "module",
   "source": "src/index.ts",
   "bin": "bin/i18n-unused.js",
-  "main": "./dist/i18n-unused.umd.js",
-  "module": "./dist/i18n-unused.module.js",
-  "exports": "./dist/i18n-unused.modern.js",
+  "main": "dist/i18n-unused.cjs",
+  "module": "dist/i18n-unused.js",
+  "exports": {
+    "require": "./dist/i18n-unused.cjs",
+    "import": "./dist/i18n-unused.js"
+  },
   "files": [
     "*"
   ],

@@ -8,7 +8,7 @@ const {
   removeUnusedTranslations,
   markUnusedTranslations,
   syncTranslations,
-} = require('../dist/i18n-unused.umd');
+} = require('../dist/i18n-unused.cjs');
 
 program.description(description);
 
