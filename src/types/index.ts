@@ -1,6 +1,11 @@
 export type ApplyFlat = (source: any, key: string) => void;
 
-export type UnusedCollect = { path: string, keys: string[], count: number }[]
+export type UnusedCollect = {
+  localePath: string,
+  srcPath: string,
+  keys: string[],
+  count: number
+}[];
 
 export type UnusedCollects = { collects: UnusedCollect, totalCount: number };
 

@@ -27,7 +27,7 @@ export const displayUnusedTranslations = async (options: RunOptions): Promise<Un
 
   unusedTranslationsCollects.collects.forEach((collect) => {
     console.log('<<<==========================================================>>>');
-    console.log(`Unused translations in: ${collect.path}`);
+    console.log(`Unused translations in: ${collect.localePath}`);
     console.log(`Unused translations count: ${collect.count}`);
     console.table(collect.keys.map((key: string) => ({ 'Translation': key })));
   });

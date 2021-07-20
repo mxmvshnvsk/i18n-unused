@@ -1,5 +1,8 @@
 import { tsImport } from 'ts-import';
 
+import { createRequire } from 'module';
+import * as module from 'module';
+
 import { readdir } from 'fs/promises';
 import { readFileSync } from 'fs';
 
@@ -22,10 +25,12 @@ export const resolveFile = async (filePath: string, resolver: ModuleResolver = (
   if (ext === 'ts') {
     m = await tsImport.compile(filePath);
   } else if (ext === 'js') {
-    const r = require('esm')(module/*, options*/)
+    let r = createRequire(import.meta.url)
+    r = r('esm')(module/*, options*/)
     m = r(filePath);
   } else if (ext === 'json') {
-    m = require(filePath);
+    const r = createRequire(import.meta.url)
+    m = r(filePath);
   }
 
   return resolver(m);

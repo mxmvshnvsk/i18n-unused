@@ -35,15 +35,15 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
   }
 
   unusedTranslationsCollects.collects.forEach((collect) => {
-    const locale = require(collect.path);
+    const locale = require(collect.localePath);
 
     collect.keys.forEach((key) => applyToFlatKey(locale, key, (source, lastKey) => {
       delete source[lastKey];
     }));
 
-    writeFileSync(collect.path, JSON.stringify(locale, null, 2));
+    writeFileSync(collect.localePath, JSON.stringify(locale, null, 2));
 
-    console.log(GREEN, `Successfully removed: ${collect.path}`);
+    console.log(GREEN, `Successfully removed: ${collect.localePath}`);
   });
 
   return unusedTranslationsCollects;

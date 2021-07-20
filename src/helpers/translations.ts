@@ -35,7 +35,12 @@ export const collectUnusedTranslations = async (
       });
     });
 
-    collect.push({ path: localePath, keys: translationsKeys, count: translationsKeys.length });
+    collect.push({
+      localePath: localePath,
+      srcPath: srcPath,
+      keys: translationsKeys,
+      count: translationsKeys.length,
+    });
   }
 
   return { collects: collect, totalCount: collect.reduce((acc, { count }) => acc + count, 0) };

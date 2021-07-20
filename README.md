@@ -96,7 +96,14 @@ It'll return to you follow collect:
 
 ```javascript
 {
-  collects: [{ path: 'locale_file_path', keys: ['unused_keys'], count: 1 }],
+  collects: [
+    {
+      localePath: 'locale_file_path',
+      srcPath: 'src_files_path',
+      keys: ['unused_key'],
+      count: 1,
+    },
+  ],
   totalCount: 1,
 }
 ```

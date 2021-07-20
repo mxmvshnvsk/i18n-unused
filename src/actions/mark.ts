@@ -35,15 +35,15 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
   }
 
   unusedTranslationsCollects.collects.forEach((collect) => {
-    const locale = require(collect.path);
+    const locale = require(collect.localePath);
 
     collect.keys.forEach((key) => applyToFlatKey(locale, key, (source, lastKey) => {
       source[lastKey] = `${config.marker} ${source[lastKey]}`;
     }));
 
-    writeFileSync(collect.path, JSON.stringify(locale, null, 2));
+    writeFileSync(collect.localePath, JSON.stringify(locale, null, 2));
 
-    console.log(GREEN, `Successfully marked: ${collect.path}`);
+    console.log(GREEN, `Successfully marked: ${collect.localePath}`);
   });
 
   return unusedTranslationsCollects;
