@@ -4,12 +4,12 @@
   "description": "The tool for finding, analyzing and removing unused i18n translations in your JavaScript project",
   "source": "src/index.ts",
   "bin": "bin/i18n-unused.js",
-  "main": "dist/i18n-unused.umd.js",
-  "module": "dist/i18n-unused.modern.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/i18n-unused.umd.js",
+  "module": "./dist/i18n-unused.module.js",
+  "exports": "./dist/i18n-unused.modern.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && microbundle",
+    "build": "rm -rf dist && microbundle --target node",
     "prepare": "npm run build"
   },
   "publishConfig": {
