@@ -34,10 +34,10 @@ export const resolveFile = async (filePath: string, resolver: ModuleResolver = (
 export const generateFilesPaths = async (
   dir: string,
   fileNameResolver: string[] | ModuleNameResolver,
-): Promise<string | string[]> => {
+): Promise<string[]> => {
   const entries = await readdir(dir, { withFileTypes: true });
 
-  const files = await Promise.all(entries.map((dirent: any) => {
+  const files = await Promise.all(entries.map(async (dirent: any): Promise<string | string[]> => {
     const nextPath: string = path.resolve(dir, dirent.name);
 
     return dirent.isDirectory() ? generateFilesPaths(nextPath, fileNameResolver) : nextPath;

@@ -4,3 +4,4 @@ export { markUnusedTranslations } from './actions/mark';
 export { syncTranslations } from './actions/sync';
 
 export { collectUnusedTranslations } from './helpers/translations';
+export { generateFilesPaths } from './helpers/files';

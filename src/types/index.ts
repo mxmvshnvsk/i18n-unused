@@ -17,9 +17,3 @@ export type RunOptions = {
   localeNameResolver?: ModuleNameResolver,
   localeModuleResolver?: ModuleResolver,
 };
-
-export type LocalesPathAndCodes = {
-  localesPath: string,
-  localesCodes: string[],
-  localesFilePaths: string[],
-};

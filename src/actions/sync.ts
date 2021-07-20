@@ -3,7 +3,7 @@ import fs from 'fs';
 import { RunOptions } from '../types';
 
 import { initialize } from '../helpers/initialize';
-import { generateLocalesPathsAndCodes } from '../helpers/findLocales';
+import { generateFilesPaths } from '../helpers/files';
 import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
@@ -25,15 +25,9 @@ const mergeLocaleData = (source: any, target: any) => {
 
 export const syncTranslations = async (source: string, target: string, options: RunOptions) => {
   const config: RunOptions = await initialize(options);
-  console.log(source, target);
 
-  const { localesFilePaths: [sourcePath, targetPath] } = await generateLocalesPathsAndCodes(
-    config.localesPath,
-    config.localesExtensions
-      // ? { allowedLocaleTypes: config.localesExtensions, include: [source, target] } @TODO revert when add other types writes
-      ? { allowedLocaleTypes: ['json'], include: [source, target] }
-      : { localeNameResolver: config.localeNameResolver, include: [source, target] },
-  );
+  const [sourcePath] = await generateFilesPaths(config.localesPath, (n) => n === source);
+  const [targetPath] = await generateFilesPaths(config.localesPath, (n) => n === target);
 
   const sourceLocale = require(sourcePath);
   const targetLocale = require(targetPath);
@@ -44,10 +38,7 @@ export const syncTranslations = async (source: string, target: string, options: 
     checkUncommittedChanges();
   }
 
-  fs.writeFileSync(
-    targetPath,
-    JSON.stringify(mergedLocale, null, 2),
-  );
+  fs.writeFileSync(targetPath, JSON.stringify(mergedLocale, null, 2));
 
   console.log(GREEN, 'Translations are synchronized');
 };

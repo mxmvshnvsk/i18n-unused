@@ -2,21 +2,18 @@ import { RunOptions, UnusedCollect } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
-import { generateLocalesPathsAndCodes } from '../helpers/findLocales';
-import { getFileSizeKb } from '../helpers/files';
+import { generateFilesPaths, getFileSizeKb } from '../helpers/files';
 
 export const displayUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
   const config = await initialize(options);
 
-  const { localesFilePaths } = await generateLocalesPathsAndCodes(
+  const localesFilesPaths = await generateFilesPaths(
     config.localesPath,
-    config.localesExtensions
-      ? { allowedLocaleTypes: config.localesExtensions }
-      : { localeNameResolver: config.localeNameResolver },
+    config.localesExtensions || config.localeNameResolver,
   );
 
   const unusedTranslationsCollect = await collectUnusedTranslations(
-    localesFilePaths,
+    localesFilesPaths,
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
     config.localeModuleResolver,
