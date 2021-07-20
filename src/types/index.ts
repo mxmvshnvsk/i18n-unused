@@ -1,6 +1,8 @@
 export type ApplyFlat = (source: any, key: string) => void;
 
-export type UnusedCollect = { path: string, keys: string[], count: number }[];
+export type UnusedCollect = { path: string, keys: string[], count: number }[]
+
+export type UnusedCollects = { collects: UnusedCollect, totalCount: number };
 
 export type ModuleNameResolver = RegExp | ((n: string) => boolean)
 

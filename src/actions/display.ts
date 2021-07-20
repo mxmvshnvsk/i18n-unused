@@ -1,18 +1,21 @@
-import { RunOptions, UnusedCollect } from '../types';
+import { RunOptions, UnusedCollects } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
 import { generateFilesPaths, getFileSizeKb } from '../helpers/files';
 
-export const displayUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
+export const displayUnusedTranslations = async (options: RunOptions): Promise<UnusedCollects> => {
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(
     config.localesPath,
-    config.localesExtensions || config.localeNameResolver,
+    {
+      extensions: config.localesExtensions,
+      fileNameResolver: config.localeNameResolver,
+    },
   );
 
-  const unusedTranslationsCollect = await collectUnusedTranslations(
+  const unusedTranslationsCollects = await collectUnusedTranslations(
     localesFilesPaths,
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
@@ -20,19 +23,18 @@ export const displayUnusedTranslations = async (options: RunOptions): Promise<Un
     config.excludeKey,
   );
 
-  unusedTranslationsCollect.forEach((collect) => {
+  unusedTranslationsCollects.collects.forEach((collect) => {
     console.log('<<<==========================================================>>>');
     console.log(`Unused translations in: ${collect.path}`);
     console.log(`Unused translations count: ${collect.count}`);
     console.table(collect.keys.map((key: string) => ({ 'Translation': key })));
   });
 
-  console.log(`Total unused translations count: ${
-    unusedTranslationsCollect.reduce((acc, { count }) => acc + count, 0)
-  }`);
+  console.log(`Total unused translations count: ${unusedTranslationsCollects.totalCount}`);
+
   console.log(`Can free up memory: ~${getFileSizeKb(
-    unusedTranslationsCollect.reduce((acc, { keys }) => `${acc}, ${keys.join(', ')}`, '')
+    unusedTranslationsCollects.collects.reduce((acc, { keys }) => `${acc}, ${keys.join(', ')}`, '')
   )}kb`);
 
-  return unusedTranslationsCollect;
+  return unusedTranslationsCollects;
 };

@@ -31,30 +31,48 @@ export const resolveFile = async (filePath: string, resolver: ModuleResolver = (
   return resolver(m);
 };
 
-export const generateFilesPaths = async (
-  dir: string,
-  fileNameResolver: string[] | ModuleNameResolver,
-): Promise<string[]> => {
-  const entries = await readdir(dir, { withFileTypes: true });
+const useFileNameResolver = (resolver: ModuleNameResolver, name: string): boolean => {
+  if (resolver instanceof RegExp) {
+    return resolver.test(name);
+  }
+  if (typeof resolver === 'function') {
+    return resolver(name)
+  }
+
+  return false;
+};
+
+interface options {
+  extensions?: string[],
+  fileNameResolver?: ModuleNameResolver,
+}
+
+export const generateFilesPaths = async (srcPath: string, { extensions, fileNameResolver }: options): Promise<string[]> => {
+  const entries = await readdir(srcPath, { withFileTypes: true });
 
   const files = await Promise.all(entries.map(async (dirent: any): Promise<string | string[]> => {
-    const nextPath: string = path.resolve(dir, dirent.name);
+    const nextPath: string = path.resolve(srcPath, dirent.name);
 
-    return dirent.isDirectory() ? generateFilesPaths(nextPath, fileNameResolver) : nextPath;
+    return dirent.isDirectory()
+      ? generateFilesPaths(nextPath, { extensions, fileNameResolver })
+      : nextPath;
   }));
 
   return Array.prototype.concat(...files).filter((v) => {
     const name = path.basename(v)
 
-    if (fileNameResolver instanceof RegExp) {
-      return fileNameResolver.test(name);
-    }
-    if (typeof fileNameResolver === 'function') {
-      return fileNameResolver(name)
+    if (extensions) {
+      const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+
+      return extensions.some((_ext: string) => {
+        if ((_ext === ext) && fileNameResolver) {
+          return useFileNameResolver(fileNameResolver, name);
+        }
+
+        return _ext === ext;
+      });
     }
 
-    const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
-
-    return fileNameResolver.includes(ext);
+    return fileNameResolver ? useFileNameResolver(fileNameResolver, name) : false;
   });
 }

@@ -34,8 +34,8 @@ module.exports = {
 | localesPath          | path for searching locales files | yes | string | -
 | srcPath              | path for searching files with translations using | yes | string | -
 | extensions           | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
-| localesExtensions    | allowed to read files extensions of locales | no, if set `localeNameResolver` | string[] | -
-| localeNameResolver   | resolver for locale file name | no, if set `localesExtensions` | RegExp, (name: string) => boolean | -
+| localesExtensions    | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
+| localeNameResolver   | resolver for locale file name | no | RegExp, (name: string) => boolean | -
 | localeModuleResolver | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
 | excludeKey           | option to excluding some translations, for example if you set `excludeKey: '.props.'`, it'll ignore all flat keys with this value | no | string, string[] | -
 | marker               | special string, it'll added via `mark-unused` | no | string | '[UNUSED]'
@@ -72,19 +72,48 @@ Display missed translations **(Work in progress)**:
 
 ## Usage in code
 
-If you use tool in code, you can run `collectUnusedTranslations`, return `Promise`:
+### collectUnusedTranslations
+
+If you use tool in code, you can run async function `collectUnusedTranslations`:
 
 ```javascript
 import { collectUnusedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  // return: [{ path: 'locale_file_path', keys: ['unused_keys'], count: 0 }]
-  const unusedCollect = await collectUnusedTranslations(
+  const unusedCollects = await collectUnusedTranslations(
     paths, // paths to locale files
     srcPath, // where to search using
     extensions, // search file extensions, eg. ['ts', 'vue']
     localeModuleResolver, // resolver for module, (module) => module
     excludeTranslationKey, // special string or sting[] to exclude flat translations
+  );
+};
+```
+
+It'll return to you follow collect:
+
+```javascript
+{
+  collects: [{ path: 'locale_file_path', keys: ['unused_keys'], count: 1 }],
+  totalCount: 1,
+}
+```
+
+### generateFilesPaths
+
+Also available async function `generateFilesPaths`:
+
+```javascript
+import { generateFilesPaths } from 'i18n-unused';
+
+const handleFilesPaths = async () => {
+  // return array of full paths to files
+  const filesPaths = await generateFilesPaths(
+    srcPath, // path where search files, example: 'src/locales'
+    {
+      extensions, // allowed files extensions, example: ['js', 'ts']
+      fileNameResolver, // resolver for file name, see more info about 'localeNameResolver' option
+    },
   );
 };
 ```

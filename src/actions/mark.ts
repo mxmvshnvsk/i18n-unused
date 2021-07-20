@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 
-import { RunOptions, UnusedCollect } from '../types';
+import { RunOptions, UnusedCollects } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { collectUnusedTranslations } from '../helpers/translations';
@@ -10,15 +10,17 @@ import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
 
-export const markUnusedTranslations = async (options: RunOptions): Promise<UnusedCollect> => {
+export const markUnusedTranslations = async (options: RunOptions): Promise<UnusedCollects> => {
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(
     config.localesPath,
-    ['json'] // @TODO implement other types when add other types writes
+    {
+      extensions: ['json'] // @TODO implement other types when add other types writes
+    },
   );
 
-  const unusedTranslationsCollect = await collectUnusedTranslations(
+  const unusedTranslationsCollects = await collectUnusedTranslations(
     localesFilesPaths,
     `${process.cwd()}/${config.srcPath}`,
     config.extensions,
@@ -30,7 +32,7 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     checkUncommittedChanges();
   }
 
-  unusedTranslationsCollect.forEach((collect) => {
+  unusedTranslationsCollects.collects.forEach((collect) => {
     const locale = require(collect.path);
 
     collect.keys.forEach((key) => applyToFlatKey(locale, key, (source, lastKey) => {
@@ -42,5 +44,5 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     console.log(GREEN, `Successfully marked: ${collect.path}`);
   });
 
-  return unusedTranslationsCollect;
+  return unusedTranslationsCollects;
 };

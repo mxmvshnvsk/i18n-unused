@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { UnusedCollect, ModuleResolver } from '../types';
+import { UnusedCollect, UnusedCollects, ModuleResolver } from '../types';
 
 import { generateFilesPaths, resolveFile } from './files';
 import { generateTranslationsFlatKeys } from './flatKeys';
@@ -13,15 +13,15 @@ export const collectUnusedTranslations = async (
   extensions: string[],
   localeModuleResolver: ModuleResolver,
   excludeTranslationKey: string | string[],
-): Promise<UnusedCollect> => {
+): Promise<UnusedCollects> => {
   const collect: UnusedCollect = [];
 
   for (const localePath of paths) {
     const locale = await resolveFile(localePath, localeModuleResolver);
     const translationsKeys = generateTranslationsFlatKeys(locale, { excludeKey: excludeTranslationKey });
-    const filesPaths = await generateFilesPaths(srcPath, extensions);
+    const filesPaths = await generateFilesPaths(srcPath, { extensions });
 
-    [...filesPaths].forEach((filePath: string) => {
+    filesPaths.forEach((filePath: string) => {
       const file = readFileSync(filePath).toString();
 
       [...translationsKeys].forEach((key: string) => {
@@ -34,5 +34,5 @@ export const collectUnusedTranslations = async (
     collect.push({ path: localePath, keys: translationsKeys, count: translationsKeys.length });
   }
 
-  return collect;
+  return { collects: collect, totalCount: collect.reduce((acc, { count }) => acc + count, 0) };
 };

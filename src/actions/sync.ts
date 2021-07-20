@@ -26,8 +26,8 @@ const mergeLocaleData = (source: any, target: any) => {
 export const syncTranslations = async (source: string, target: string, options: RunOptions) => {
   const config: RunOptions = await initialize(options);
 
-  const [sourcePath] = await generateFilesPaths(config.localesPath, (n) => n === source);
-  const [targetPath] = await generateFilesPaths(config.localesPath, (n) => n === target);
+  const [sourcePath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === source });
+  const [targetPath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === target });
 
   const sourceLocale = require(sourcePath);
   const targetLocale = require(targetPath);

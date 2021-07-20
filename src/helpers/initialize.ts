@@ -27,7 +27,7 @@ export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions>
   }
 
   if (!config.localesExtensions && !config.localeNameResolver) {
-    throw new Error('"localesExtensions" or "localeNameResolver" is required');
+    config.localesExtensions = ['json'];
   }
 
   return { ...defaultValues, ...config };
