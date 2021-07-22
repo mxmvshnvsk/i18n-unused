@@ -37,7 +37,7 @@ module.exports = {
 | localesExtensions     | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | resolver for locale file name | no | RegExp, (name: string) => boolean | -
 | localeModuleResolver  | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
-| translationKeyMatcher | matcher for searching translation keys in files | no | RegExp | RegExp, match `$t`, `t`, `$tc` and `tc`
+| translationKeyMatcher | matcher for searching translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc` and `tc`
 | excludeKey            | option to excluding some translations, for example if you set `excludeKey: '.props.'`, it'll ignore all flat keys with this value | no | string, string[] | -
 | marker                | special string, it'll added via `mark-unused` | no | string | '[UNUSED]'
 | gitCheck              | it'll show git change tree state | no | boolean | false
@@ -124,7 +124,7 @@ const handleTranslations = async () => {
     {
       localeModuleResolver: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
-      translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/ig, // optional, match translation keys in files
+      translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/ig, // optional, match translation keys in files
     },
   );
 };
