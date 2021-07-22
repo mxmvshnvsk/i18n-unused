@@ -6,6 +6,7 @@ const defaultValues: RunOptions = {
   excludeKey: '',
   marker: '[UNUSED]',
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/ig,
   localeModuleResolver: (m: any): any => m.default || m,
 };
 

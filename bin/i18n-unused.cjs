@@ -5,6 +5,7 @@ const { description, version } = require('../package.json');
 
 const {
   displayUnusedTranslations,
+  displayMissedTranslations,
   removeUnusedTranslations,
   markUnusedTranslations,
   syncTranslations,
@@ -24,6 +25,11 @@ program
   .command('display-unused')
   .description('output table with unused translations')
   .action(() => displayUnusedTranslations(program.opts()));
+
+program
+  .command('display-missed')
+  .description('output table with missed translations')
+  .action(() => displayMissedTranslations(program.opts()));
 
 program
   .command('mark-unused')
