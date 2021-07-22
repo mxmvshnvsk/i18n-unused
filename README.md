@@ -102,7 +102,6 @@ It'll return to you follow collect:
   collects: [
     {
       localePath: 'locale_file_path',
-      srcPath: 'src_files_path',
       keys: ['unused_key'],
       count: 1,
     },
