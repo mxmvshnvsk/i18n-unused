@@ -167,10 +167,15 @@ const handleFilesPaths = async () => {
 };
 ```
 
-All other action return `UnusedCollect` too, list of actions:
+## Action results
+
+Next actions return `UnusedCollects`:
   - `displayUnusedTranslations`
   - `removeUnusedTranslations`
   - `markUnusedTranslations`
+
+Next actions return `MissedCollects`:
+- `displayMissedTranslations`
 
 ## What else?
 
