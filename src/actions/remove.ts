@@ -1,5 +1,7 @@
 import { writeFileSync } from 'fs';
 
+import { createRequire } from 'module';
+
 import { RunOptions, UnusedCollects } from '../types';
 
 import { initialize } from '../helpers/initialize';
@@ -41,7 +43,8 @@ export const removeUnusedTranslations = async (options: RunOptions): Promise<Unu
   }
 
   unusedTranslationsCollects.collects.forEach((collect) => {
-    const locale = require(collect.localePath);
+    const r = createRequire(import.meta.url);
+    const locale = r(collect.localePath);
 
     collect.keys.forEach((key) => applyToFlatKey(locale, key, (source, lastKey) => {
       delete source[lastKey];

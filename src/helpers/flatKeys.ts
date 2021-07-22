@@ -1,4 +1,4 @@
-export const isStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
+import { RecursiveStruct } from '../types';
 
 interface options {
   parent?: string,
@@ -7,7 +7,7 @@ interface options {
 }
 
 export const generateTranslationsFlatKeys = (
-  source: any,
+  source: RecursiveStruct,
   {
     parent,
     keys = [],
@@ -17,8 +17,8 @@ export const generateTranslationsFlatKeys = (
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key
 
-    if (isStructure(source[key])) {
-      generateTranslationsFlatKeys(source[key], {
+    if (!Array.isArray(source[key]) && typeof source[key] === 'object') {
+      generateTranslationsFlatKeys(source[key] as RecursiveStruct, {
         parent: flatKey,
         keys: keys,
         excludeKey: excludeKey,

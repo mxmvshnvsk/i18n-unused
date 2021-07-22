@@ -1,6 +1,6 @@
-import { ApplyFlat } from '../types';
+import { ApplyFlat, RecursiveStruct } from '../types';
 
-export const applyToFlatKey = (source: any, key: string, cb: ApplyFlat, separator: string = '.') => {
+export const applyToFlatKey = (source: RecursiveStruct, key: string, cb: ApplyFlat, separator = '.'): boolean => {
   const separatedKey = key.split(separator);
   const keyLength = separatedKey.length - 1;
 
@@ -8,9 +8,11 @@ export const applyToFlatKey = (source: any, key: string, cb: ApplyFlat, separato
     if (i === keyLength) {
       cb(acc, _k);
     } else {
-      acc = acc[_k];
+      acc = acc[_k] as RecursiveStruct;
     }
 
     return acc;
   }, source);
+
+  return true;
 };

@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 
 import { GREEN, MAGENTA } from './consoleColor';
 
-export const checkUncommittedChanges = () => {
+export const checkUncommittedChanges = (): boolean => {
   const result = execSync('git status --porcelain').toString();
 
   if (result) {

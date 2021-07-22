@@ -1,4 +1,6 @@
-export type ApplyFlat = (source: any, key: string) => void;
+export type RecursiveStruct = { [key: string]: string | string[] | RecursiveStruct };
+
+export type ApplyFlat = (source: RecursiveStruct, key: string) => void;
 
 export type UnusedCollect = {
   localePath: string,
@@ -29,7 +31,7 @@ export type ModuleNameResolver = RegExp | ((n: string) => boolean);
 
 export type TranslationKeyMatcher = RegExp;
 
-export type ModuleResolver = (m: any) => any;
+export type ModuleResolver = (m: RecursiveStruct) => RecursiveStruct;
 
 export type RunOptions = {
   extensions?: string[],

@@ -1,13 +1,15 @@
+/* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
+
 import { resolveFile } from './files';
 
-import { RunOptions } from '../types';
+import { RunOptions, RecursiveStruct } from '../types';
 
 const defaultValues: RunOptions = {
   excludeKey: '',
   marker: '[UNUSED]',
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
   translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/ig,
-  localeModuleResolver: (m: any): any => m.default || m,
+  localeModuleResolver: (m: RecursiveStruct): RecursiveStruct => (m.default || m) as RecursiveStruct,
 };
 
 export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions> => {

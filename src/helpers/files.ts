@@ -4,11 +4,11 @@ import { createRequire } from 'module';
 import * as module from 'module';
 
 import { readdir } from 'fs/promises';
-import { readFileSync } from 'fs';
+import { readFileSync, Dirent } from 'fs';
 
 import path from 'path';
 
-import { ModuleResolver, ModuleNameResolver } from '../types';
+import { ModuleResolver, ModuleNameResolver, RecursiveStruct } from '../types';
 
 export const getFileSizeKb = (str: string): number => Buffer.byteLength(str, 'utf8') / 1000;
 
@@ -18,18 +18,18 @@ export const isSubstrInFile = (filePath: string, substr: string): boolean => {
   return file.includes(substr);
 };
 
-export const resolveFile = async (filePath: string, resolver: ModuleResolver = (m) => m): Promise<any> => {
+export const resolveFile = async (filePath: string, resolver: ModuleResolver = (m) => m): Promise<RecursiveStruct> => {
   const [, ext] = filePath.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
   let m = {};
 
   if (ext === 'ts') {
     m = await tsImport.compile(filePath);
   } else if (ext === 'js') {
-    let r = createRequire(import.meta.url)
-    r = r('esm')(module/*, options*/)
+    let r = createRequire(import.meta.url);
+    r = r('esm')(module/*, options*/);
     m = r(filePath);
   } else if (ext === 'json') {
-    const r = createRequire(import.meta.url)
+    const r = createRequire(import.meta.url);
     m = r(filePath);
   }
 
@@ -53,9 +53,9 @@ interface options {
 }
 
 export const generateFilesPaths = async (srcPath: string, { extensions, fileNameResolver }: options): Promise<string[]> => {
-  const entries = await readdir(srcPath, { withFileTypes: true });
+  const entries: Dirent[] = await readdir(srcPath, { withFileTypes: true });
 
-  const files = await Promise.all(entries.map(async (dirent: any): Promise<string | string[]> => {
+  const files = await Promise.all(entries.map(async (dirent: Dirent): Promise<string | string[]> => {
     const nextPath: string = path.resolve(srcPath, dirent.name);
 
     return dirent.isDirectory()

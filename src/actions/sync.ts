@@ -1,6 +1,8 @@
 import fs from 'fs';
 
-import { RunOptions } from '../types';
+import { createRequire } from 'module';
+
+import { RunOptions, RecursiveStruct } from '../types';
 
 import { initialize } from '../helpers/initialize';
 import { generateFilesPaths } from '../helpers/files';
@@ -8,13 +10,13 @@ import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
 
-const mergeLocaleData = (source: any, target: any) => {
+const mergeLocaleData = (source: RecursiveStruct, target: RecursiveStruct) => {
   const keys = Object.keys(source);
 
   keys.forEach((key) => {
     if (typeof source[key] === 'object') {
       target[key] = target[key] || {};
-      mergeLocaleData(source[key], target[key]);
+      mergeLocaleData(source[key] as RecursiveStruct, target[key] as RecursiveStruct);
     } else {
       target[key] = target[key] || source[key];
     }
@@ -23,14 +25,15 @@ const mergeLocaleData = (source: any, target: any) => {
   return target;
 }
 
-export const syncTranslations = async (source: string, target: string, options: RunOptions) => {
+export const syncTranslations = async (source: string, target: string, options: RunOptions): Promise<boolean> => {
   const config: RunOptions = await initialize(options);
 
   const [sourcePath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === source });
   const [targetPath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === target });
 
-  const sourceLocale = require(sourcePath);
-  const targetLocale = require(targetPath);
+  const r = createRequire(import.meta.url);
+  const sourceLocale = r(sourcePath);
+  const targetLocale = r(targetPath);
 
   const mergedLocale = mergeLocaleData(sourceLocale, targetLocale);
 
@@ -41,4 +44,6 @@ export const syncTranslations = async (source: string, target: string, options: 
   fs.writeFileSync(targetPath, JSON.stringify(mergedLocale, null, 2));
 
   console.log(GREEN, 'Translations are synchronized');
+
+  return true;
 };
