@@ -12,15 +12,14 @@ import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
 
-export const markUnusedTranslations = async (options: RunOptions): Promise<UnusedCollects> => {
+export const markUnusedTranslations = async (
+  options: RunOptions,
+): Promise<UnusedCollects> => {
   const config = await initialize(options);
 
-  const localesFilesPaths = await generateFilesPaths(
-    config.localesPath,
-    {
-      extensions: ['json'] // @TODO implement other types when add other types writes
-    },
-  );
+  const localesFilesPaths = await generateFilesPaths(config.localesPath, {
+    extensions: ['json'], // @TODO implement other types when add other types writes
+  });
 
   const srcFilesPaths = await generateFilesPaths(
     `${process.cwd()}/${config.srcPath}`,
@@ -46,9 +45,11 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     const r = createRequire(import.meta.url);
     const locale = r(collect.localePath);
 
-    collect.keys.forEach((key) => applyToFlatKey(locale, key, (source, lastKey) => {
-      source[lastKey] = `${config.marker} ${source[lastKey]}`;
-    }));
+    collect.keys.forEach((key) =>
+      applyToFlatKey(locale, key, (source, lastKey) => {
+        source[lastKey] = `${config.marker} ${source[lastKey]}`;
+      }),
+    );
 
     writeFileSync(collect.localePath, JSON.stringify(locale, null, 2));
 

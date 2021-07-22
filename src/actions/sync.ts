@@ -16,20 +16,31 @@ const mergeLocaleData = (source: RecursiveStruct, target: RecursiveStruct) => {
   keys.forEach((key) => {
     if (typeof source[key] === 'object') {
       target[key] = target[key] || {};
-      mergeLocaleData(source[key] as RecursiveStruct, target[key] as RecursiveStruct);
+      mergeLocaleData(
+        source[key] as RecursiveStruct,
+        target[key] as RecursiveStruct,
+      );
     } else {
       target[key] = target[key] || source[key];
     }
-  })
+  });
 
   return target;
-}
+};
 
-export const syncTranslations = async (source: string, target: string, options: RunOptions): Promise<boolean> => {
+export const syncTranslations = async (
+  source: string,
+  target: string,
+  options: RunOptions,
+): Promise<boolean> => {
   const config: RunOptions = await initialize(options);
 
-  const [sourcePath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === source });
-  const [targetPath] = await generateFilesPaths(config.localesPath, { fileNameResolver: (n) => n === target });
+  const [sourcePath] = await generateFilesPaths(config.localesPath, {
+    fileNameResolver: (n) => n === source,
+  });
+  const [targetPath] = await generateFilesPaths(config.localesPath, {
+    fileNameResolver: (n) => n === target,
+  });
 
   const r = createRequire(import.meta.url);
   const sourceLocale = r(sourcePath);

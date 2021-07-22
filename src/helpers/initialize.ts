@@ -8,15 +8,20 @@ const defaultValues: RunOptions = {
   excludeKey: '',
   marker: '[UNUSED]',
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
-  translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/ig,
-  localeModuleResolver: (m: RecursiveStruct): RecursiveStruct => (m.default || m) as RecursiveStruct,
+  translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/gi,
+  localeModuleResolver: (m: RecursiveStruct): RecursiveStruct =>
+    (m.default || m) as RecursiveStruct,
 };
 
-export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions> => {
+export const initialize = async (
+  inlineOptions: RunOptions,
+): Promise<RunOptions> => {
   let config: RunOptions = { ...inlineOptions };
 
   try {
-    const configFile = await resolveFile(`${process.cwd()}/i18n-unused.config.js`);
+    const configFile = await resolveFile(
+      `${process.cwd()}/i18n-unused.config.js`,
+    );
 
     config = { ...configFile, ...inlineOptions };
   } catch (e) {}
@@ -34,4 +39,4 @@ export const initialize = async (inlineOptions: RunOptions): Promise<RunOptions>
   }
 
   return { ...defaultValues, ...config };
-}
+};
