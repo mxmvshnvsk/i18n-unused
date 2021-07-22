@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version)
 ![npm](https://img.shields.io/npm/dt/i18n-unused?color=green)
 
-The tool for finding, analyzing and removing unused i18n translations in your JavaScript project
+The tool for finding, analyzing and removing unused and missed i18n translations in your JavaScript project
 
 ## Installation
 
@@ -31,15 +31,16 @@ module.exports = {
 
 | Option name | <div style="width: 280px">Description</div> | Required | Type | <div style="min-width: 100px">Default value</div> |
 | --- | --- | --- | --- | --- |
-| localesPath          | path for searching locales files | yes | string | -
-| srcPath              | path for searching files with translations using | yes | string | -
-| extensions           | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
-| localesExtensions    | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
-| localeNameResolver   | resolver for locale file name | no | RegExp, (name: string) => boolean | -
-| localeModuleResolver | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
-| excludeKey           | option to excluding some translations, for example if you set `excludeKey: '.props.'`, it'll ignore all flat keys with this value | no | string, string[] | -
-| marker               | special string, it'll added via `mark-unused` | no | string | '[UNUSED]'
-| gitCheck             | it'll show git change tree state | no | boolean | false
+| localesPath           | path for searching locales files | yes | string | -
+| srcPath               | path for searching files with translations using | yes | string | -
+| extensions            | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
+| localesExtensions     | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
+| localeNameResolver    | resolver for locale file name | no | RegExp, (name: string) => boolean | -
+| localeModuleResolver  | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
+| translationKeyMatcher | matcher for searching translation keys in files | no | RegExp | RegExp, match `$t`, `t`, `$tc` and `tc`
+| excludeKey            | option to excluding some translations, for example if you set `excludeKey: '.props.'`, it'll ignore all flat keys with this value | no | string, string[] | -
+| marker                | special string, it'll added via `mark-unused` | no | string | '[UNUSED]'
+| gitCheck              | it'll show git change tree state | no | boolean | false
 
 ## Usage
 
@@ -68,7 +69,10 @@ Sync translations (works only with `json` for now):
 i18n-unused sync <source> <target>
 ```
 
-Display missed translations **(Work in progress)**:
+Display missed translations:
+```bash
+i18n-unused display-missed
+```
 
 ## Usage in code
 
@@ -81,10 +85,9 @@ import { collectUnusedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
   const unusedCollects = await collectUnusedTranslations(
-    paths, // paths to locale files
-    srcPath, // where to search using
+    localesPaths, // paths to locale files
+    srcFilesPaths, // paths to src files
     {
-      extensions: ['ts', 'vue'], // optional, search file extensions, eg
       localeModuleResolver: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
     },
@@ -105,6 +108,44 @@ It'll return to you follow collect:
     },
   ],
   totalCount: 1,
+}
+```
+
+### collectMissedTranslations
+
+If you use tool in code, you can run async function `collectUnusedTranslations`:
+
+```javascript
+import { collectMissedTranslations } from 'i18n-unused';
+
+const handleTranslations = async () => {
+  const unusedCollects = await collectMissedTranslations(
+    localesPaths, // paths to locale files
+    srcFilesPaths, // paths to src files
+    {
+      localeModuleResolver: (module) => module, // optional, resolver for module
+      excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
+      translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/ig, // optional, match translation keys in files
+    },
+  );
+};
+```
+
+It'll return to you follow collect:
+
+```javascript
+{
+  collects: [
+    {
+      filePath: 'src_file_path',
+      staticKeys: ['missed_key'], // keys without ${} syntax
+      dynamicKeys: ['missed_key'], // keys with ${} syntax
+      staticCount: 1,
+      dynamicCount: 1,
+    },
+  ],
+    totalStaticCount: 1,
+    totalDynamicCount: 1,
 }
 ```
 
