@@ -1,4 +1,4 @@
-import { isTranslationStructure } from './translations';
+export const isStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
 
 interface options {
   parent?: string,
@@ -17,7 +17,7 @@ export const generateTranslationsFlatKeys = (
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key
 
-    if (isTranslationStructure(source[key])) {
+    if (isStructure(source[key])) {
       generateTranslationsFlatKeys(source[key], {
         parent: flatKey,
         keys: keys,

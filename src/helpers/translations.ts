@@ -12,8 +12,6 @@ import {
 import { resolveFile } from './files';
 import { generateTranslationsFlatKeys } from './flatKeys';
 
-export const isTranslationStructure = (v: any): boolean => (!Array.isArray(v) && typeof v === 'object');
-
 interface unusedOptions {
   localeModuleResolver?: ModuleResolver,
   excludeTranslationKey?: string | string[],
