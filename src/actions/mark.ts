@@ -20,11 +20,17 @@ export const markUnusedTranslations = async (options: RunOptions): Promise<Unuse
     },
   );
 
-  const unusedTranslationsCollects = await collectUnusedTranslations(
-    localesFilesPaths,
+  const srcFilesPaths = await generateFilesPaths(
     `${process.cwd()}/${config.srcPath}`,
     {
       extensions: config.extensions,
+    },
+  );
+
+  const unusedTranslationsCollects = await collectUnusedTranslations(
+    localesFilesPaths,
+    srcFilesPaths,
+    {
       localeModuleResolver: config.localeModuleResolver,
       excludeTranslationKey: config.excludeKey,
     },
