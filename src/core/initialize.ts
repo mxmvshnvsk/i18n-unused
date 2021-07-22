@@ -8,7 +8,7 @@ const defaultValues: RunOptions = {
   excludeKey: '',
   marker: '[UNUSED]',
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
-  translationKeyMatcher: /(?:[$ .](t|tc))\(.*?\)/gi,
+  translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/gi,
   localeModuleResolver: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
 };
