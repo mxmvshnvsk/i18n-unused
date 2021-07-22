@@ -17,7 +17,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && microbundle --target node",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -36,6 +38,9 @@
   },
   "homepage": "https://github.com/mxmvshnvsk/i18n-unused#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
     "jest": "^27.0.6",
     "microbundle": "^0.13.3",
     "typescript": "^4.3.5"
