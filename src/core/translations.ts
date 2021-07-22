@@ -9,8 +9,8 @@ import {
   TranslationKeyMatcher,
 } from '../types';
 
-import { resolveFile } from './files';
-import { generateTranslationsFlatKeys } from './flatKeys';
+import { resolveFile } from '../helpers/files';
+import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
 
 interface unusedOptions {
   localeModuleResolver?: ModuleResolver;

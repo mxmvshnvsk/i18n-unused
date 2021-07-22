@@ -4,10 +4,10 @@ import { createRequire } from 'module';
 
 import { RunOptions, UnusedCollects } from '../types';
 
-import { initialize } from '../helpers/initialize';
-import { collectUnusedTranslations } from '../helpers/translations';
+import { initialize } from '../core/initialize';
+import { collectUnusedTranslations } from '../core/translations';
 import { generateFilesPaths } from '../helpers/files';
-import { applyToFlatKey } from '../helpers/action';
+import { applyToFlatKey } from '../core/action';
 import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';

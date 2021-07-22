@@ -6,5 +6,5 @@ export { removeUnusedTranslations } from './actions/remove';
 export { markUnusedTranslations } from './actions/mark';
 export { syncTranslations } from './actions/sync';
 
-export { collectUnusedTranslations } from './helpers/translations';
+export { collectUnusedTranslations } from './core/translations';
 export { generateFilesPaths } from './helpers/files';

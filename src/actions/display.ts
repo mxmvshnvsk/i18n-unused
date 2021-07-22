@@ -1,10 +1,10 @@
 import { RunOptions, UnusedCollects, MissedCollects } from '../types';
 
-import { initialize } from '../helpers/initialize';
+import { initialize } from '../core/initialize';
 import {
   collectUnusedTranslations,
   collectMissedTranslations,
-} from '../helpers/translations';
+} from '../core/translations';
 import { generateFilesPaths, getFileSizeKb } from '../helpers/files';
 
 export const displayUnusedTranslations = async (

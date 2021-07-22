@@ -4,7 +4,7 @@ import { createRequire } from 'module';
 
 import { RunOptions, RecursiveStruct } from '../types';
 
-import { initialize } from '../helpers/initialize';
+import { initialize } from '../core/initialize';
 import { generateFilesPaths } from '../helpers/files';
 import { checkUncommittedChanges } from '../helpers/git';
 

@@ -1,6 +1,6 @@
 /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
 
-import { resolveFile } from './files';
+import { resolveFile } from '../helpers/files';
 
 import { RunOptions, RecursiveStruct } from '../types';
 
