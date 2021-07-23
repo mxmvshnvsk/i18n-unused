@@ -112,13 +112,13 @@ It'll return to you follow collect:
 
 ### collectMissedTranslations
 
-If you use tool in code, you can run async function `collectUnusedTranslations`:
+If you use tool in code, you can run async function `collectMissedTranslations`:
 
 ```javascript
 import { collectMissedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  const unusedCollects = await collectMissedTranslations(
+  const missedCollects = await collectMissedTranslations(
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
@@ -143,8 +143,8 @@ It'll return to you follow collect:
       dynamicCount: 1,
     },
   ],
-    totalStaticCount: 1,
-    totalDynamicCount: 1,
+  totalStaticCount: 1,
+  totalDynamicCount: 1,
 }
 ```
 
