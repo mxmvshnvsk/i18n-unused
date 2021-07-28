@@ -17,6 +17,10 @@ interface unusedOptions {
   excludeTranslationKey?: string | string[];
 }
 
+const replaceQuotes = (v: string): string => v.replace(/(`|'|")/gi, '');
+const isStaticKey = (v: string): boolean => !v.includes('${') && /'|"/.test(v);
+const isDynamicKey = (v: string): boolean => v.includes('${') || !/'|"/.test(v);
+
 export const collectUnusedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
@@ -92,8 +96,10 @@ export const collectMissedTranslations = async (
       const file = readFileSync(filePath).toString();
       const matchKeys = (file.match(translationKeyMatcher) || [])
         .map((v) => {
-          const [t] = v.match(/\((.*?)\)/gi);
-          return t.replace(/(\(|\)|`|'|"|\[\d\])/gi, '');
+          const [match] = v.match(/\((.*?)\)/gi);
+          const [translation] = match.split(',');
+
+          return translation.replace(/(\(|\)|\[\d\])/gi, '');
         })
         .filter((v) => !flatKeys.includes(v));
 
@@ -109,12 +115,12 @@ export const collectMissedTranslations = async (
       return;
     }
 
-    const staticKeys = filesMissedTranslationsKeys[filePath].filter(
-      (v) => !v.includes('${'),
-    );
-    const dynamicKeys = filesMissedTranslationsKeys[filePath].filter((v) =>
-      v.includes('${'),
-    );
+    const staticKeys = filesMissedTranslationsKeys[filePath]
+      .filter(isStaticKey)
+      .map(replaceQuotes);
+    const dynamicKeys = filesMissedTranslationsKeys[filePath]
+      .filter(isDynamicKey)
+      .map(replaceQuotes);
 
     collects.push({
       filePath,
