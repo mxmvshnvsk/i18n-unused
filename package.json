@@ -45,8 +45,8 @@
     "eslint": "^7.31.0",
     "jest": "^27.0.6",
     "microbundle": "^0.13.3",
-    "ts-jest": "^27.0.3",
     "prettier": "^2.3.2",
+    "ts-jest": "^27.0.4",
     "typescript": "^4.3.5"
   },
   "dependencies": {

@@ -24,20 +24,20 @@ export const resolveFile = async (
   resolver: ModuleResolver = (m) => m,
 ): Promise<RecursiveStruct> => {
   const [, ext] = filePath.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
-  let m = {};
+  let module = {};
 
   if (ext === 'ts') {
-    m = await tsImport.compile(filePath);
+    module = await tsImport.compile(filePath);
   } else if (ext === 'js') {
-    let r = createRequire(import.meta.url);
-    r = r('esm')(module /*, options*/);
-    m = r(filePath);
+    let nodeRequire = createRequire(import.meta.url);
+    nodeRequire = nodeRequire('esm')(module /*, options*/);
+    module = nodeRequire(filePath);
   } else if (ext === 'json') {
     const r = createRequire(import.meta.url);
-    m = r(filePath);
+    module = r(filePath);
   }
 
-  return resolver(m);
+  return resolver(module);
 };
 
 const useFileNameResolver = (
