@@ -32,7 +32,7 @@ module.exports = {
 | Option name | <div style="width: 280px">Description</div> | Required | Type | <div style="min-width: 100px">Default value</div> |
 | --- | --- | --- | --- | --- |
 | localesPath           | path for searching locales files | yes | string | -
-| srcPath               | path for searching files with translations using | yes | string | -
+| srcPath               | path for searching files with translations using | no | string | `''` (same as run folder)
 | extensions            | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | localesExtensions     | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | resolver for locale file name | no | RegExp, (name: string) => boolean | -

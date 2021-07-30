@@ -5,6 +5,7 @@ import { resolveFile } from '../helpers/files';
 import { RunOptions, RecursiveStruct } from '../types';
 
 const defaultValues: RunOptions = {
+  srcPath: '',
   excludeKey: '',
   marker: '[UNUSED]',
   extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
@@ -28,10 +29,6 @@ export const initialize = async (
 
   if (!config.localesPath) {
     throw new Error('Locales path is required');
-  }
-
-  if (!config.srcPath) {
-    throw new Error('Src path is required');
   }
 
   if (!config.localesExtensions && !config.localeNameResolver) {
