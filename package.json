@@ -15,7 +15,7 @@
     "*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "rm -rf dist && microbundle --target node",
     "prepare": "npm run build",
     "lint": "eslint ./src --ext .ts",
@@ -39,11 +39,13 @@
   },
   "homepage": "https://github.com/mxmvshnvsk/i18n-unused#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
     "eslint": "^7.31.0",
     "jest": "^27.0.6",
     "microbundle": "^0.13.3",
+    "ts-jest": "^27.0.3",
     "prettier": "^2.3.2",
     "typescript": "^4.3.5"
   },
