@@ -10,7 +10,7 @@ import { checkUncommittedChanges } from '../helpers/git';
 
 import { GREEN } from '../helpers/consoleColor';
 
-const mergeLocaleData = (source: RecursiveStruct, target: RecursiveStruct) => {
+export const mergeLocaleData = (source: RecursiveStruct, target: RecursiveStruct) => {
   const keys = Object.keys(source);
 
   keys.forEach((key) => {

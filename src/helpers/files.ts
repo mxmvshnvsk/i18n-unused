@@ -30,7 +30,7 @@ export const resolveFile = async (
     m = await tsImport.compile(filePath);
   } else if (ext === 'js') {
     let r = createRequire(import.meta.url);
-    r = r('esm')(module /*, options*/);
+    r = r('esm')(m /*, options*/);
     m = r(filePath);
   } else if (ext === 'json') {
     const r = createRequire(import.meta.url);
