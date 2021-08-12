@@ -16,10 +16,10 @@ program.description(description);
 program.version(version, '-v --version', 'output version');
 
 program
-  .option('-ext, --extensions [extensions...]', 'files extensions, which includes for searching (ext ext ext; by default: js, ts, jsx, tsx, vue)')
+  .option('-sExt, --src-extensions [srcExtensions...]', 'files extensions, which includes for searching (ext ext ext; by default: js, ts, jsx, tsx, vue)')
   .option('-lExt, --locales-extensions [localesExtensions...]', 'locales files extensions (ext,ext,ext; by default: json)')
-  .option('-src, --src-path <srcPath>', 'path to source of code (path, ex. \'src\')')
-  .option('-path, --locales-path <localesPath>', 'path to locales (path, ex. \'src/locales\')');
+  .option('-sPath, --src-path <srcPath>', 'path to source of code (path, ex. \'src\')')
+  .option('-lPath, --locales-path <localesPath>', 'path to locales (path, ex. \'src/locales\')');
 
 program
   .command('display-unused')

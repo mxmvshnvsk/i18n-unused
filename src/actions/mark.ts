@@ -2,7 +2,7 @@ import { writeFileSync } from 'fs';
 
 import { createRequire } from 'module';
 
-import { RunOptions, UnusedCollects } from '../types';
+import { RunOptions, UnusedTranslations } from '../types';
 
 import { initialize } from '../core/initialize';
 import { collectUnusedTranslations } from '../core/translations';
@@ -14,25 +14,25 @@ import { GREEN } from '../helpers/consoleColor';
 
 export const markUnusedTranslations = async (
   options: RunOptions,
-): Promise<UnusedCollects> => {
+): Promise<UnusedTranslations> => {
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(config.localesPath, {
-    extensions: ['json'], // @TODO implement other types when add other types writes
+    srcExtensions: ['json'], // @TODO implement other types when add other types writes
   });
 
   const srcFilesPaths = await generateFilesPaths(
     `${process.cwd()}/${config.srcPath}`,
     {
-      extensions: config.extensions,
+      srcExtensions: config.srcExtensions,
     },
   );
 
-  const unusedTranslationsCollects = await collectUnusedTranslations(
+  const unusedTranslations = await collectUnusedTranslations(
     localesFilesPaths,
     srcFilesPaths,
     {
-      localeModuleResolver: config.localeModuleResolver,
+      localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
     },
   );
@@ -41,20 +41,20 @@ export const markUnusedTranslations = async (
     checkUncommittedChanges();
   }
 
-  unusedTranslationsCollects.collects.forEach((collect) => {
+  unusedTranslations.translations.forEach((translation) => {
     const r = createRequire(import.meta.url);
-    const locale = r(collect.localePath);
+    const locale = r(translation.localePath);
 
-    collect.keys.forEach((key) =>
+    translation.keys.forEach((key) =>
       applyToFlatKey(locale, key, (source, lastKey) => {
         source[lastKey] = `${config.marker} ${source[lastKey]}`;
       }),
     );
 
-    writeFileSync(collect.localePath, JSON.stringify(locale, null, 2));
+    writeFileSync(translation.localePath, JSON.stringify(locale, null, 2));
 
-    console.log(GREEN, `Successfully marked: ${collect.localePath}`);
+    console.log(GREEN, `Successfully marked: ${translation.localePath}`);
   });
 
-  return unusedTranslationsCollects;
+  return unusedTranslations;
 };

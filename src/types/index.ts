@@ -4,13 +4,13 @@ export type RecursiveStruct = {
 
 export type ApplyFlat = (source: RecursiveStruct, key: string) => void;
 
-export type UnusedCollect = {
+export type UnusedTranslation = {
   localePath: string;
   keys: string[];
   count: number;
 }[];
 
-export type MissedCollect = {
+export type MissedTranslation = {
   filePath: string;
   staticKeys: string[];
   dynamicKeys: string[];
@@ -18,13 +18,13 @@ export type MissedCollect = {
   dynamicCount: number;
 }[];
 
-export type UnusedCollects = {
-  collects: UnusedCollect;
+export type UnusedTranslations = {
+  translations: UnusedTranslation;
   totalCount: number;
 };
 
-export type MissedCollects = {
-  collects: MissedCollect;
+export type MissedTranslations = {
+  translations: MissedTranslation;
   totalStaticCount: number;
   totalDynamicCount: number;
 };
@@ -36,14 +36,14 @@ export type TranslationKeyMatcher = RegExp;
 export type ModuleResolver = (m: RecursiveStruct) => RecursiveStruct;
 
 export type RunOptions = {
-  extensions?: string[];
   localesExtensions?: string[];
   localesPath?: string;
+  srcExtensions?: string[];
   srcPath?: string;
   excludeKey?: string | string[];
   marker?: string;
   gitCheck?: boolean;
   translationKeyMatcher?: TranslationKeyMatcher;
   localeNameResolver?: ModuleNameResolver;
-  localeModuleResolver?: ModuleResolver;
+  localeFileParser?: ModuleResolver;
 };

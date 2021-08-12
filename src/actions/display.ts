@@ -1,4 +1,4 @@
-import { RunOptions, UnusedCollects, MissedCollects } from '../types';
+import { RunOptions, UnusedTranslations, MissedTranslations } from '../types';
 
 import { initialize } from '../core/initialize';
 import {
@@ -9,109 +9,117 @@ import { generateFilesPaths, getFileSizeKb } from '../helpers/files';
 
 export const displayUnusedTranslations = async (
   options: RunOptions,
-): Promise<UnusedCollects> => {
+): Promise<UnusedTranslations> => {
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(config.localesPath, {
-    extensions: config.localesExtensions,
+    srcExtensions: config.localesExtensions,
     fileNameResolver: config.localeNameResolver,
   });
 
   const srcFilesPaths = await generateFilesPaths(
     `${process.cwd()}/${config.srcPath}`,
     {
-      extensions: config.extensions,
+      srcExtensions: config.srcExtensions,
     },
   );
 
-  const unusedTranslationsCollects = await collectUnusedTranslations(
+  const unusedTranslations = await collectUnusedTranslations(
     localesFilesPaths,
     srcFilesPaths,
     {
-      localeModuleResolver: config.localeModuleResolver,
+      localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
     },
   );
 
-  unusedTranslationsCollects.collects.forEach((collect) => {
+  unusedTranslations.translations.forEach((translation) => {
     console.log(
       '<<<==========================================================>>>',
     );
-    console.log(`Unused translations in: ${collect.localePath}`);
-    console.log(`Unused translations count: ${collect.count}`);
-    console.table(collect.keys.map((key: string) => ({ Translation: key })));
+    console.log(`Unused translations in: ${translation.localePath}`);
+    console.log(`Unused translations count: ${translation.count}`);
+    console.table(
+      translation.keys.map((key: string) => ({ Translation: key })),
+    );
   });
 
   console.log(
-    `Total unused translations count: ${unusedTranslationsCollects.totalCount}`,
+    `Total unused translations count: ${unusedTranslations.totalCount}`,
   );
 
   console.log(
     `Can free up memory: ~${getFileSizeKb(
-      unusedTranslationsCollects.collects.reduce(
+      unusedTranslations.translations.reduce(
         (acc, { keys }) => `${acc}, ${keys.join(', ')}`,
         '',
       ),
     )}kb`,
   );
 
-  return unusedTranslationsCollects;
+  return unusedTranslations;
 };
 
 export const displayMissedTranslations = async (
   options: RunOptions,
-): Promise<MissedCollects> => {
+): Promise<MissedTranslations> => {
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(config.localesPath, {
-    extensions: config.localesExtensions,
+    srcExtensions: config.localesExtensions,
     fileNameResolver: config.localeNameResolver,
   });
 
   const srcFilesPaths = await generateFilesPaths(
     `${process.cwd()}/${config.srcPath}`,
     {
-      extensions: config.extensions,
+      srcExtensions: config.srcExtensions,
     },
   );
 
-  const missedTranslationsCollects = await collectMissedTranslations(
+  const missedTranslations = await collectMissedTranslations(
     localesFilesPaths,
     srcFilesPaths,
     {
-      localeModuleResolver: config.localeModuleResolver,
+      localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,
     },
   );
 
-  missedTranslationsCollects.collects.forEach((collect) => {
+  missedTranslations.translations.forEach((translation) => {
     console.log(
       '<<<==========================================================>>>',
     );
 
-    console.log(`Missed translations in: ${collect.filePath}`);
-    console.log(`Missed static translations count: ${collect.staticCount}`);
-    console.log(`Missed dynamic translations count: ${collect.dynamicCount}`);
+    console.log(`Missed translations in: ${translation.filePath}`);
+    console.log(`Missed static translations count: ${translation.staticCount}`);
+    console.log(
+      `Missed dynamic translations count: ${translation.dynamicCount}`,
+    );
 
-    if (collect.staticKeys.length) {
+    if (translation.staticKeys.length) {
       console.log('--------------------------------------------');
       console.log('Static keys:');
-      console.table(collect.staticKeys.map((key: string) => ({ Key: key })));
+      console.table(
+        translation.staticKeys.map((key: string) => ({ Key: key })),
+      );
     }
-    if (collect.dynamicKeys.length) {
+    if (translation.dynamicKeys.length) {
       console.log('--------------------------------------------');
       console.log('Dynamic keys:');
-      console.table(collect.dynamicKeys.map((key: string) => ({ Key: key })));
+      console.table(
+        translation.dynamicKeys.map((key: string) => ({ Key: key })),
+      );
     }
   });
 
   console.log(
-    `Total missed static translations count: ${missedTranslationsCollects.totalStaticCount}`,
+    `Total missed static translations count: ${missedTranslations.totalStaticCount}`,
   );
   console.log(
-    `Total missed dynamic translations count: ${missedTranslationsCollects.totalDynamicCount}`,
+    `Total missed dynamic translations count: ${missedTranslations.totalDynamicCount}`,
   );
 
-  return missedTranslationsCollects;
+  return missedTranslations;
 };

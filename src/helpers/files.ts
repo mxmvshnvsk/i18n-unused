@@ -55,13 +55,13 @@ const useFileNameResolver = (
 };
 
 interface options {
-  extensions?: string[];
+  srcExtensions?: string[];
   fileNameResolver?: ModuleNameResolver;
 }
 
 export const generateFilesPaths = async (
   srcPath: string,
-  { extensions, fileNameResolver }: options,
+  { srcExtensions, fileNameResolver }: options,
 ): Promise<string[]> => {
   const entries: Dirent[] = await readdir(srcPath, { withFileTypes: true });
 
@@ -70,7 +70,7 @@ export const generateFilesPaths = async (
       const nextPath: string = path.resolve(srcPath, dirent.name);
 
       return dirent.isDirectory()
-        ? generateFilesPaths(nextPath, { extensions, fileNameResolver })
+        ? generateFilesPaths(nextPath, { srcExtensions, fileNameResolver })
         : nextPath;
     }),
   );
@@ -78,10 +78,10 @@ export const generateFilesPaths = async (
   return Array.prototype.concat(...files).filter((v) => {
     const name = path.basename(v);
 
-    if (extensions) {
+    if (srcExtensions) {
       const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
 
-      return extensions.some((_ext: string) => {
+      return srcExtensions.some((_ext: string) => {
         if (_ext === ext && fileNameResolver) {
           return useFileNameResolver(fileNameResolver, name);
         }

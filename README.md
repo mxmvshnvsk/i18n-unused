@@ -33,10 +33,10 @@ module.exports = {
 | --- | --- | --- | --- | --- |
 | localesPath           | path for searching locales files | yes | string | -
 | srcPath               | path for searching files with translations using | no | string | `''` (same as run folder)
-| extensions            | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
+| srcExtensions         | allowed to read files extensions | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | localesExtensions     | allowed to read files extensions of locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | resolver for locale file name | no | RegExp, (name: string) => boolean | -
-| localeModuleResolver  | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
+| localeFileParser  | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
 | translationKeyMatcher | matcher for searching translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc` and `tc`
 | excludeKey            | option to excluding some translations, for example if you set `excludeKey: '.props.'`, it'll ignore all flat keys with this value | no | string, string[] | -
 | marker                | special string, it'll added via `mark-unused` | no | string | '[UNUSED]'
@@ -84,11 +84,11 @@ If you use tool in code, you can run async function `collectUnusedTranslations`:
 import { collectUnusedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  const unusedCollects = await collectUnusedTranslations(
+  const unusedTranslations = await collectUnusedTranslations(
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
-      localeModuleResolver: (module) => module, // optional, resolver for module
+      localeFileParser: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
     },
   );
@@ -99,7 +99,7 @@ It'll return to you follow collect:
 
 ```javascript
 {
-  collects: [
+  translations: [
     {
       localePath: 'locale_file_path',
       keys: ['unused_key'],
@@ -118,11 +118,11 @@ If you use tool in code, you can run async function `collectMissedTranslations`:
 import { collectMissedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  const missedCollects = await collectMissedTranslations(
+  const missedTranslations = await collectMissedTranslations(
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
-      localeModuleResolver: (module) => module, // optional, resolver for module
+      localeFileParser: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
       translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/ig, // optional, match translation keys in files
     },
@@ -134,7 +134,7 @@ It'll return to you follow collect:
 
 ```javascript
 {
-  collects: [
+  translations: [
     {
       filePath: 'src_file_path',
       staticKeys: ['missed_key'], // keys without ${} syntax
@@ -169,12 +169,12 @@ const handleFilesPaths = async () => {
 
 ## Action results
 
-Next actions return `UnusedCollects`:
+Next actions return `UnusedTranslations`:
   - `displayUnusedTranslations`
   - `removeUnusedTranslations`
   - `markUnusedTranslations`
 
-Next actions return `MissedCollects`:
+Next actions return `MissedTranslations`:
 - `displayMissedTranslations`
 
 ## What else?

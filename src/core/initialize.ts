@@ -8,9 +8,9 @@ const defaultValues: RunOptions = {
   srcPath: '',
   excludeKey: '',
   marker: '[UNUSED]',
-  extensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  srcExtensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
   translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/gi,
-  localeModuleResolver: (m: RecursiveStruct): RecursiveStruct =>
+  localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
 };
 

@@ -1,10 +1,10 @@
 import { readFileSync } from 'fs';
 
 import {
-  UnusedCollect,
-  UnusedCollects,
-  MissedCollect,
-  MissedCollects,
+  UnusedTranslation,
+  UnusedTranslations,
+  MissedTranslation,
+  MissedTranslations,
   ModuleResolver,
   TranslationKeyMatcher,
 } from '../types';
@@ -13,7 +13,7 @@ import { resolveFile } from '../helpers/files';
 import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
 
 interface unusedOptions {
-  localeModuleResolver?: ModuleResolver;
+  localeFileParser?: ModuleResolver;
   excludeTranslationKey?: string | string[];
 }
 
@@ -24,12 +24,12 @@ const isDynamicKey = (v: string): boolean => v.includes('${') || !/'|"/.test(v);
 export const collectUnusedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
-  { localeModuleResolver, excludeTranslationKey }: unusedOptions,
-): Promise<UnusedCollects> => {
-  const collect: UnusedCollect = [];
+  { localeFileParser, excludeTranslationKey }: unusedOptions,
+): Promise<UnusedTranslations> => {
+  const translations: UnusedTranslation = [];
 
   for (const localePath of localesPaths) {
-    const locale = await resolveFile(localePath, localeModuleResolver);
+    const locale = await resolveFile(localePath, localeFileParser);
     const translationsKeys = generateTranslationsFlatKeys(locale, {
       excludeKey: excludeTranslationKey,
     });
@@ -44,7 +44,7 @@ export const collectUnusedTranslations = async (
       });
     });
 
-    collect.push({
+    translations.push({
       localePath: localePath,
       keys: translationsKeys,
       count: translationsKeys.length,
@@ -52,13 +52,13 @@ export const collectUnusedTranslations = async (
   }
 
   return {
-    collects: collect,
-    totalCount: collect.reduce((acc, { count }) => acc + count, 0),
+    translations,
+    totalCount: translations.reduce((acc, { count }) => acc + count, 0),
   };
 };
 
 interface missedOptions {
-  localeModuleResolver?: ModuleResolver;
+  localeFileParser?: ModuleResolver;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
 }
@@ -67,18 +67,18 @@ export const collectMissedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
   {
-    localeModuleResolver,
+    localeFileParser,
     excludeTranslationKey,
     translationKeyMatcher,
   }: missedOptions,
-): Promise<MissedCollects> => {
-  const collects: MissedCollect = [];
+): Promise<MissedTranslations> => {
+  const translations: MissedTranslation = [];
 
   const flatKeys = [
     ...new Set(
       await localesPaths.reduce(async (asyncAcc, localePath) => {
         const acc = await asyncAcc;
-        const locale = await resolveFile(localePath, localeModuleResolver);
+        const locale = await resolveFile(localePath, localeFileParser);
         const translationsKeys = generateTranslationsFlatKeys(locale, {
           excludeKey: excludeTranslationKey,
         });
@@ -122,7 +122,7 @@ export const collectMissedTranslations = async (
       .filter(isDynamicKey)
       .map(replaceQuotes);
 
-    collects.push({
+    translations.push({
       filePath,
       staticKeys,
       dynamicKeys,
@@ -132,9 +132,12 @@ export const collectMissedTranslations = async (
   });
 
   return {
-    collects,
-    totalStaticCount: collects.reduce((acc, { staticCount: c }) => acc + c, 0),
-    totalDynamicCount: collects.reduce(
+    translations,
+    totalStaticCount: translations.reduce(
+      (acc, { staticCount: c }) => acc + c,
+      0,
+    ),
+    totalDynamicCount: translations.reduce(
       (acc, { dynamicCount: c }) => acc + c,
       0,
     ),
