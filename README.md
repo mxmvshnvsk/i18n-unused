@@ -34,9 +34,9 @@ module.exports = {
 | localesPath           | path to search for locales | yes | string | -
 | localesExtensions     | allowed file extensions for locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | file name resolver for locales | no | RegExp, (name: string) => boolean | -
-| localeModuleResolver  | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
+| localeFileParser      | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
 | srcPath               | path to search for translations | no | string | `''` (same as run folder)
-| extensions            | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
+| srcExtensions         | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | translationKeyMatcher | matcher to searching for translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc` and `tc`
 | excludeKey            | doesn't process translations that include passed key(s), for example if you set `excludeKey: '.props.'`, script will ignore `Button.props.value`. | no | string, string[] | -
 | marker                | special string to mark unused translations, it'll added via `mark-unused` | no | string | '[UNUSED]'
@@ -84,7 +84,7 @@ If you use tool in code, you can run async function `collectUnusedTranslations`:
 import { collectUnusedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  const unusedCollects = await collectUnusedTranslations(
+  const unusedTranslations = await collectUnusedTranslations(
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
@@ -99,7 +99,7 @@ It'll return to you follow collect:
 
 ```javascript
 {
-  collects: [
+  translations: [
     {
       localePath: 'locale_file_path',
       keys: ['unused_key'],
@@ -118,7 +118,7 @@ If you use tool in code, you can run async function `collectMissedTranslations`:
 import { collectMissedTranslations } from 'i18n-unused';
 
 const handleTranslations = async () => {
-  const missedCollects = await collectMissedTranslations(
+  const missedTranslations = await collectMissedTranslations(
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
@@ -134,7 +134,7 @@ You'll get the following collection:
 
 ```javascript
 {
-  collects: [
+  translations: [
     {
       filePath: 'src_file_path',
       staticKeys: ['missed_key'], // keys without ${} syntax
@@ -160,7 +160,7 @@ const handleFilesPaths = async () => {
   const filesPaths = await generateFilesPaths(
     srcPath, // path where search files, example: 'src/locales'
     {
-      extensions, // allowed file extensions, example: ['js', 'ts']
+      srcExtensions, // allowed file extensions, example: ['js', 'ts']
       fileNameResolver, // resolver for file name, see more info about 'localeNameResolver' option
     },
   );
@@ -169,12 +169,12 @@ const handleFilesPaths = async () => {
 
 ## Action results
 
-Next actions return `UnusedCollects`:
+Next actions return `unusedTranslations`:
   - `displayUnusedTranslations`
   - `removeUnusedTranslations`
   - `markUnusedTranslations`
 
-Next actions return `MissedCollects`:
+Next actions return `missedTranslations`:
 - `displayMissedTranslations`
 
 ## What else?
