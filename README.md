@@ -88,7 +88,7 @@ const handleTranslations = async () => {
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
-      localeModuleResolver: (module) => module, // optional, resolver for module
+      localeFileParser: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
     },
   );
@@ -122,7 +122,7 @@ const handleTranslations = async () => {
     localesPaths, // paths to locale files
     srcFilesPaths, // paths to src files
     {
-      localeModuleResolver: (module) => module, // optional, resolver for module
+      localeFileParser: (module) => module, // optional, resolver for module
       excludeTranslationKey: ['.props.'], // optional, special string or sting[] to exclude flat translations
       translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/ig, // optional, match translation keys in files
     },
