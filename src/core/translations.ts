@@ -17,9 +17,10 @@ interface unusedOptions {
   excludeTranslationKey?: string | string[];
 }
 
-const replaceQuotes = (v: string): string => v.replace(/(`|'|")/gi, '');
-const isStaticKey = (v: string): boolean => !v.includes('${') && /'|"/.test(v);
-const isDynamicKey = (v: string): boolean => v.includes('${') || !/'|"/.test(v);
+const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, '');
+const isStaticKey = (v: string): boolean => !v.includes('${') && /['"]/.test(v);
+const isDynamicKey = (v: string): boolean =>
+  v.includes('${') || !/['"]/.test(v);
 
 export const collectUnusedTranslations = async (
   localesPaths: string[],
@@ -101,7 +102,7 @@ export const collectMissedTranslations = async (
 
           return translation.replace(/(\(|\)|\[\d\])/gi, '');
         })
-        .filter((v) => !flatKeys.includes(v));
+        .filter((v) => !flatKeys.includes(replaceQuotes(v)));
 
       if (matchKeys.length) {
         acc[filePath].push(...matchKeys);
