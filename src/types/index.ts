@@ -43,6 +43,7 @@ export type RunOptions = {
   excludeKey?: string | string[];
   marker?: string;
   gitCheck?: boolean;
+  ignoreComments?: boolean;
   translationKeyMatcher?: TranslationKeyMatcher;
   localeNameResolver?: ModuleNameResolver;
   localeFileParser?: ModuleResolver;
