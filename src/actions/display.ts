@@ -28,6 +28,7 @@ export const displayUnusedTranslations = async (
     localesFilesPaths,
     srcFilesPaths,
     {
+      ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
     },
@@ -81,6 +82,7 @@ export const displayMissedTranslations = async (
     localesFilesPaths,
     srcFilesPaths,
     {
+      ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,

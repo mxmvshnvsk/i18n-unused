@@ -32,6 +32,7 @@ export const removeUnusedTranslations = async (
     localesFilesPaths,
     srcFilesPaths,
     {
+      ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
     },
