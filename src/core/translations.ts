@@ -13,19 +13,28 @@ import { resolveFile } from '../helpers/files';
 import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
 
 interface unusedOptions {
+  ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
   excludeTranslationKey?: string | string[];
 }
 
 const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, '');
+
 const isStaticKey = (v: string): boolean => !v.includes('${') && /['"]/.test(v);
+
 const isDynamicKey = (v: string): boolean =>
   v.includes('${') || !/['"]/.test(v);
+
+const removeComments = (fileTxt: string): string =>
+  fileTxt
+    .split('\n')
+    .filter((str) => !/^(\/\/|\/\*\*|\*\/|\*|<!--)/.test(str.trim()))
+    .join('\n');
 
 export const collectUnusedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
-  { localeFileParser, excludeTranslationKey }: unusedOptions,
+  { ignoreComments, localeFileParser, excludeTranslationKey }: unusedOptions,
 ): Promise<UnusedTranslations> => {
   const translations: UnusedTranslation = [];
 
@@ -39,7 +48,7 @@ export const collectUnusedTranslations = async (
       const file = readFileSync(filePath).toString();
 
       [...translationsKeys].forEach((key: string) => {
-        if (file.includes(key)) {
+        if ((ignoreComments ? removeComments(file) : file).includes(key)) {
           translationsKeys.splice(translationsKeys.indexOf(key), 1);
         }
       });
@@ -59,6 +68,7 @@ export const collectUnusedTranslations = async (
 };
 
 interface missedOptions {
+  ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
@@ -68,6 +78,7 @@ export const collectMissedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
   {
+    ignoreComments,
     localeFileParser,
     excludeTranslationKey,
     translationKeyMatcher,
@@ -95,7 +106,12 @@ export const collectMissedTranslations = async (
       acc[filePath] = acc[filePath] || [];
 
       const file = readFileSync(filePath).toString();
-      const matchKeys = (file.match(translationKeyMatcher) || [])
+
+      const matchKeys = (
+        (ignoreComments ? removeComments(file) : file).match(
+          translationKeyMatcher,
+        ) || []
+      )
         .map((v) => {
           const [match] = v.match(/\((.*?)\)/gi);
           const [translation] = match.split(',');
