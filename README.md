@@ -39,6 +39,7 @@ module.exports = {
 | srcExtensions         | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | translationKeyMatcher | matcher to searching for translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc` and `tc`
 | excludeKey            | doesn't process translations that include passed key(s), for example if you set `excludeKey: '.props.'`, script will ignore `Button.props.value`. | no | string, string[] | -
+| ignoreComments        | Ignore code comments in src files. | no | boolean | false
 | marker                | special string to mark unused translations, it'll added via `mark-unused` | no | string | '[UNUSED]'
 | gitCheck              | show git state change tree | no | boolean | false
 
