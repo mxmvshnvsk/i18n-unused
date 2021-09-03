@@ -1,7 +1,7 @@
 # i18n-unused
 
-![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version)
-![npm](https://img.shields.io/npm/dt/i18n-unused?color=green)
+![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version&?link=http://left&link=https://www.npmjs.com/package/i18n-unused)
+![npm](https://img.shields.io/npm/dt/i18n-unused?color=green&link=https://www.npmjs.com/package/i18n-unused)
 
 The tool for finding, analyzing and removing unused and missing i18n translations in your JavaScript project.
 
