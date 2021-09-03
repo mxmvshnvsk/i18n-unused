@@ -25,11 +25,33 @@ const isStaticKey = (v: string): boolean => !v.includes('${') && /['"]/.test(v);
 const isDynamicKey = (v: string): boolean =>
   v.includes('${') || !/['"]/.test(v);
 
-const removeComments = (fileTxt: string): string =>
-  fileTxt
+const isInlineComment = (str: string): boolean => /^(\/\/)/.test(str);
+const isHTMLComment = (str: string): boolean => /^(<!--)/.test(str);
+const isStartOfMultilineComment = (str: string): boolean => /^(\/\*)/.test(str);
+const isEndOfMultilineComment = (str: string): boolean => /^(\*\/)/.test(str);
+
+const removeComments = (fileTxt: string): string => {
+  let skip = false;
+
+  return fileTxt
     .split('\n')
-    .filter((str) => !/^(\/\/|\/\*\*|\*\/|\*|<!--)/.test(str.trim()))
+    .reduce((acc, str) => {
+      const _str = str.trim();
+
+      if (isStartOfMultilineComment(_str) || isEndOfMultilineComment(_str)) {
+        skip = isStartOfMultilineComment(_str);
+      }
+
+      if (skip || isInlineComment(_str) || isHTMLComment(_str)) {
+        return acc;
+      }
+
+      acc.push(str);
+
+      return acc;
+    }, [])
     .join('\n');
+};
 
 export const collectUnusedTranslations = async (
   localesPaths: string[],
