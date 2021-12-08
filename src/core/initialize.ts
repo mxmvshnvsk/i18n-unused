@@ -10,7 +10,7 @@ const defaultValues: RunOptions = {
   marker: '[UNUSED]',
   ignoreComments: false,
   srcExtensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
-  translationKeyMatcher: /(?:[$ .](_|t|tc))\(.*?\)/gi,
+  translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(.*?\)/gi,
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
 };
