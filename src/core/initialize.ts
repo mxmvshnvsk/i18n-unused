@@ -6,6 +6,7 @@ import { RunOptions, RecursiveStruct } from '../types';
 
 const defaultValues: RunOptions = {
   srcPath: '',
+  context: true,
   excludeKey: '',
   marker: '[UNUSED]',
   ignoreComments: false,

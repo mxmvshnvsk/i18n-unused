@@ -12,12 +12,6 @@ import {
 import { resolveFile } from '../helpers/files';
 import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
 
-interface unusedOptions {
-  ignoreComments: boolean;
-  localeFileParser?: ModuleResolver;
-  excludeTranslationKey?: string | string[];
-}
-
 const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, '');
 
 const isStaticKey = (v: string): boolean => !v.includes('${') && /['"]/.test(v);
@@ -53,10 +47,22 @@ const removeComments = (fileTxt: string): string => {
     .join('\n');
 };
 
+interface unusedOptions {
+  context?: boolean;
+  ignoreComments: boolean;
+  localeFileParser?: ModuleResolver;
+  excludeTranslationKey?: string | string[];
+}
+
 export const collectUnusedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
-  { ignoreComments, localeFileParser, excludeTranslationKey }: unusedOptions,
+  {
+    ignoreComments,
+    localeFileParser,
+    excludeTranslationKey,
+    context,
+  }: unusedOptions,
 ): Promise<UnusedTranslations> => {
   const translations: UnusedTranslation = [];
 
@@ -64,6 +70,7 @@ export const collectUnusedTranslations = async (
     const locale = await resolveFile(localePath, localeFileParser);
     const translationsKeys = generateTranslationsFlatKeys(locale, {
       excludeKey: excludeTranslationKey,
+      context,
     });
 
     srcFilesPaths.forEach((filePath: string) => {
@@ -90,6 +97,7 @@ export const collectUnusedTranslations = async (
 };
 
 interface missedOptions {
+  context?: boolean;
   ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
   excludeTranslationKey?: string | string[];
@@ -100,6 +108,7 @@ export const collectMissedTranslations = async (
   localesPaths: string[],
   srcFilesPaths: string[],
   {
+    context,
     ignoreComments,
     localeFileParser,
     excludeTranslationKey,
@@ -115,6 +124,7 @@ export const collectMissedTranslations = async (
         const locale = await resolveFile(localePath, localeFileParser);
         const translationsKeys = generateTranslationsFlatKeys(locale, {
           excludeKey: excludeTranslationKey,
+          context,
         });
 
         return [...acc, ...translationsKeys];

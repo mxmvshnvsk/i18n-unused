@@ -32,6 +32,7 @@ export const markUnusedTranslations = async (
     localesFilesPaths,
     srcFilesPaths,
     {
+      context: config.context,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,

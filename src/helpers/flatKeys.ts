@@ -3,24 +3,26 @@ import { RecursiveStruct } from '../types';
 interface options {
   parent?: string;
   keys?: string[];
+  context?: boolean;
   excludeKey?: string | string[];
 }
 
 export const generateTranslationsFlatKeys = (
   source: RecursiveStruct,
-  { parent, keys = [], excludeKey }: options,
+  { parent, keys = [], excludeKey, context }: options,
 ): string[] => {
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key;
 
     if (!Array.isArray(source[key]) && typeof source[key] === 'object') {
       generateTranslationsFlatKeys(source[key] as RecursiveStruct, {
+        excludeKey: excludeKey,
         parent: flatKey,
         keys: keys,
-        excludeKey: excludeKey,
+        context,
       });
     } else {
-      keys.push(flatKey);
+      keys.push(context ? flatKey.split('_')[0] : flatKey);
     }
   });
 

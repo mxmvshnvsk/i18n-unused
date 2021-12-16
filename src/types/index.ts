@@ -47,4 +47,5 @@ export type RunOptions = {
   translationKeyMatcher?: TranslationKeyMatcher;
   localeNameResolver?: ModuleNameResolver;
   localeFileParser?: ModuleResolver;
+  context?: boolean;
 };
