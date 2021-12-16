@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/i18n-unused?color=red&label=version&link=https://www.npmjs.com/package/i18n-unused)
 ![npm](https://img.shields.io/npm/dt/i18n-unused?color=green&link=https://www.npmjs.com/package/i18n-unused)
 
-The tool for finding, analyzing and removing unused and missing i18n translations in your JavaScript project.
+The static analyze tool for finding, marking and removing unused and missing i18n translations in your JavaScript project.
 
 ## Installation
 
@@ -42,6 +42,7 @@ module.exports = {
 | ignoreComments        | Ignore code comments in src files. | no | boolean | false
 | marker                | special string to mark unused translations, it'll added via `mark-unused` | no | string | '[UNUSED]'
 | gitCheck              | show git state change tree | no | boolean | false
+| context               | use i18n context, (eg: [plurals](https://www.i18next.com/translation-function/context)) | no | boolean | true
 
 ## Usage
 
