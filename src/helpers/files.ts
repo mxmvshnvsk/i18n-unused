@@ -1,10 +1,8 @@
 import { tsImport } from 'ts-import';
 
 import { createRequire } from 'module';
-import * as module from 'module';
 
-import { readdir } from 'fs/promises';
-import { readFileSync, Dirent } from 'fs';
+import { readFileSync, Dirent, promises as FsPromises } from 'fs';
 
 import path from 'path';
 
@@ -55,28 +53,33 @@ const useFileNameResolver = (
 };
 
 interface options {
+  ignorePaths?: string[];
   srcExtensions?: string[];
   fileNameResolver?: ModuleNameResolver;
 }
 
 export const generateFilesPaths = async (
   srcPath: string,
-  { srcExtensions, fileNameResolver }: options,
+  { ignorePaths, srcExtensions, fileNameResolver }: options,
 ): Promise<string[]> => {
-  const entries: Dirent[] = await readdir(srcPath, { withFileTypes: true });
+  const entries: Dirent[] = await FsPromises.readdir(srcPath, { withFileTypes: true });
 
   const files = await Promise.all(
     entries.map(async (dirent: Dirent): Promise<string | string[]> => {
       const nextPath: string = path.resolve(srcPath, dirent.name);
 
       return dirent.isDirectory()
-        ? generateFilesPaths(nextPath, { srcExtensions, fileNameResolver })
+        ? generateFilesPaths(nextPath, { ignorePaths, srcExtensions, fileNameResolver })
         : nextPath;
     }),
   );
 
   return Array.prototype.concat(...files).filter((v) => {
     const name = path.basename(v);
+
+    if (ignorePaths && ignorePaths.some((ignorePath) => path.dirname(v).endsWith(`/${ignorePath}`))) {
+      return false;
+    }
 
     if (srcExtensions) {
       const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];

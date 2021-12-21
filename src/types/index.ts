@@ -40,6 +40,7 @@ export type RunOptions = {
   localesPath?: string;
   srcExtensions?: string[];
   srcPath?: string;
+  ignorePaths?: string[];
   excludeKey?: string | string[];
   marker?: string;
   gitCheck?: boolean;
