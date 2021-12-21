@@ -62,14 +62,20 @@ export const generateFilesPaths = async (
   srcPath: string,
   { ignorePaths, srcExtensions, fileNameResolver }: options,
 ): Promise<string[]> => {
-  const entries: Dirent[] = await FsPromises.readdir(srcPath, { withFileTypes: true });
+  const entries: Dirent[] = await FsPromises.readdir(srcPath, {
+    withFileTypes: true,
+  });
 
   const files = await Promise.all(
     entries.map(async (dirent: Dirent): Promise<string | string[]> => {
       const nextPath: string = path.resolve(srcPath, dirent.name);
 
       return dirent.isDirectory()
-        ? generateFilesPaths(nextPath, { ignorePaths, srcExtensions, fileNameResolver })
+        ? generateFilesPaths(nextPath, {
+            ignorePaths,
+            srcExtensions,
+            fileNameResolver,
+          })
         : nextPath;
     }),
   );
@@ -77,7 +83,12 @@ export const generateFilesPaths = async (
   return Array.prototype.concat(...files).filter((v) => {
     const name = path.basename(v);
 
-    if (ignorePaths && ignorePaths.some((ignorePath) => path.dirname(v).endsWith(`/${ignorePath}`))) {
+    if (
+      ignorePaths &&
+      ignorePaths.some((ignorePath) =>
+        path.dirname(v).endsWith(`/${ignorePath}`),
+      )
+    ) {
       return false;
     }
 
