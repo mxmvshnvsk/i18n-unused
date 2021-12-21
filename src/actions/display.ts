@@ -77,6 +77,7 @@ export const displayMissedTranslations = async (
     `${process.cwd()}/${config.srcPath}`,
     {
       srcExtensions: config.srcExtensions,
+      ignorePaths: config.ignorePaths,
     },
   );
 

@@ -86,7 +86,7 @@ export const generateFilesPaths = async (
     if (
       ignorePaths &&
       ignorePaths.some((ignorePath) =>
-        path.dirname(v).endsWith(`/${ignorePath}`),
+        path.dirname(v).includes(`/${ignorePath}`),
       )
     ) {
       return false;
