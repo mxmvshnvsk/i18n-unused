@@ -37,6 +37,7 @@ module.exports = {
 | localeFileParser      | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
 | srcPath               | path to search for translations | no | string | `''` (same as run folder)
 | srcExtensions         | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
+| ignorePaths           | ignored paths, eg: `['src/ignored-folder']` | no | string[] | -
 | translationKeyMatcher | matcher to searching for translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc`, `tc` and `i18nKey`
 | excludeKey            | doesn't process translations that include passed key(s), for example if you set `excludeKey: '.props.'`, script will ignore `Button.props.value`. | no | string, string[] | -
 | ignoreComments        | Ignore code comments in src files. | no | boolean | false
