@@ -22,6 +22,7 @@ export const displayUnusedTranslations = async (
     {
       srcExtensions: config.srcExtensions,
       ignorePaths: config.ignorePaths,
+      basePath: config.srcPath,
     },
   );
 
@@ -78,6 +79,7 @@ export const displayMissedTranslations = async (
     {
       srcExtensions: config.srcExtensions,
       ignorePaths: config.ignorePaths,
+      basePath: config.srcPath,
     },
   );
 

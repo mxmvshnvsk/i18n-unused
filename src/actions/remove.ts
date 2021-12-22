@@ -26,6 +26,7 @@ export const removeUnusedTranslations = async (
     {
       srcExtensions: config.srcExtensions,
       ignorePaths: config.ignorePaths,
+      basePath: config.srcPath,
     },
   );
 
