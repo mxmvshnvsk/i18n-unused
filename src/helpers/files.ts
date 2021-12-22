@@ -53,6 +53,7 @@ const useFileNameResolver = (
 };
 
 interface options {
+  basePath?: string;
   ignorePaths?: string[];
   srcExtensions?: string[];
   fileNameResolver?: ModuleNameResolver;
@@ -60,52 +61,70 @@ interface options {
 
 export const generateFilesPaths = async (
   srcPath: string,
-  { ignorePaths, srcExtensions, fileNameResolver }: options,
+  { basePath, ignorePaths, srcExtensions, fileNameResolver }: options,
 ): Promise<string[]> => {
+  // Dirent: https://nodejs.org/api/fs.html#class-fsdirent
   const entries: Dirent[] = await FsPromises.readdir(srcPath, {
     withFileTypes: true,
   });
 
-  const files = await Promise.all(
-    entries.map(async (dirent: Dirent): Promise<string | string[]> => {
-      const nextPath: string = path.resolve(srcPath, dirent.name);
+  const files = await entries.reduce(async (accPromise, dirent: Dirent) => {
+    const nextPath: string = path.resolve(srcPath, dirent.name);
+    const acc = await accPromise;
 
-      return dirent.isDirectory()
-        ? generateFilesPaths(nextPath, {
-            ignorePaths,
-            srcExtensions,
-            fileNameResolver,
-          })
-        : nextPath;
-    }),
-  );
+    if (ignorePaths) {
+      const fullBasePath = `${process.cwd()}/${basePath}`;
+      const pathFromSrc = `${nextPath.split(fullBasePath).join(basePath)}${
+        dirent.isDirectory() ? '/' : ''
+      }`;
 
-  return Array.prototype.concat(...files).filter((v) => {
-    const name = path.basename(v);
-
-    if (
-      ignorePaths &&
-      ignorePaths.some((ignorePath) =>
-        path.dirname(v).includes(`/${ignorePath}`),
-      )
-    ) {
-      return false;
+      if (
+        ignorePaths.some((ignorePath) =>
+          pathFromSrc.startsWith(`${ignorePath}/`),
+        )
+      ) {
+        return acc;
+      }
     }
 
-    if (srcExtensions) {
-      const [, ext] = name.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+    if (dirent.isDirectory()) {
+      const generatedNextPath = await generateFilesPaths(nextPath, {
+        basePath,
+        ignorePaths,
+        srcExtensions,
+        fileNameResolver,
+      });
 
-      return srcExtensions.some((_ext: string) => {
+      acc.push(...generatedNextPath);
+
+      return acc;
+    }
+
+    const fileName = path.basename(nextPath);
+
+    if (srcExtensions) {
+      const [, ext] = fileName.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
+      const validExtension = srcExtensions.some((_ext: string) => {
         if (_ext === ext && fileNameResolver) {
-          return useFileNameResolver(fileNameResolver, name);
+          return useFileNameResolver(fileNameResolver, fileName);
         }
 
         return _ext === ext;
       });
+
+      if (!validExtension) {
+        return acc;
+      }
     }
 
-    return fileNameResolver
-      ? useFileNameResolver(fileNameResolver, name)
-      : false;
-  });
+    if (fileNameResolver && !useFileNameResolver(fileNameResolver, fileName)) {
+      return acc;
+    }
+
+    acc.push(nextPath);
+
+    return acc;
+  }, Promise.resolve([]));
+
+  return files;
 };
