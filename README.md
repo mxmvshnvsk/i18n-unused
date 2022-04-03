@@ -44,6 +44,9 @@ module.exports = {
 | marker                | special string to mark unused translations, it'll added via `mark-unused` | no | string | '[UNUSED]'
 | gitCheck              | show git state change tree | no | boolean | false
 | context               | use i18n context, (eg: [plurals](https://www.i18next.com/translation-function/context)) | no | boolean | true
+| flatTranslations      | use flat translations, (eg: [Flat JSON](https://www.codeandweb.com/babeledit/documentation/file-formats#flat-json)) | no | boolean | false
+| translationSeparator         | separator for translations using in code | no | string | '.'
+| translationContextSeparator  | separator for i18n context (see `context` option) | no | string | '_'
 
 ## Usage
 
