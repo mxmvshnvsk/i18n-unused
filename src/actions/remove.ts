@@ -35,6 +35,7 @@ export const removeUnusedTranslations = async (
     srcFilesPaths,
     {
       context: config.context,
+      contextSeparator: config.translationContextSeparator,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
@@ -50,9 +51,17 @@ export const removeUnusedTranslations = async (
     const locale = r(translation.localePath);
 
     translation.keys.forEach((key) =>
-      applyToFlatKey(locale, key, (source, lastKey) => {
-        delete source[lastKey];
-      }),
+      applyToFlatKey(
+        locale,
+        key,
+        (source, lastKey) => {
+          delete source[lastKey];
+        },
+        {
+          flatTranslations: config.flatTranslations,
+          separator: config.translationSeparator,
+        },
+      ),
     );
 
     writeFileSync(translation.localePath, JSON.stringify(locale, null, 2));

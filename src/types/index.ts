@@ -49,4 +49,7 @@ export type RunOptions = {
   localeNameResolver?: ModuleNameResolver;
   localeFileParser?: ModuleResolver;
   context?: boolean;
+  flatTranslations?: boolean,
+  translationSeparator?: string,
+  translationContextSeparator?: string,
 };

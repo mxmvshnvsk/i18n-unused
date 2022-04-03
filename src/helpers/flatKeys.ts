@@ -1,28 +1,36 @@
 import { RecursiveStruct } from '../types';
 
-interface options {
+interface Options {
   parent?: string;
   keys?: string[];
-  context?: boolean;
+  context: boolean;
+  contextSeparator: string,
   excludeKey?: string | string[];
 }
 
 export const generateTranslationsFlatKeys = (
   source: RecursiveStruct,
-  { parent, keys = [], excludeKey, context }: options,
+  {
+    parent,
+    keys = [],
+    excludeKey,
+    context,
+    contextSeparator,
+  }: Options,
 ): string[] => {
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key;
 
     if (!Array.isArray(source[key]) && typeof source[key] === 'object') {
       generateTranslationsFlatKeys(source[key] as RecursiveStruct, {
-        excludeKey: excludeKey,
+        contextSeparator,
         parent: flatKey,
-        keys: keys,
+        excludeKey,
         context,
+        keys,
       });
     } else {
-      keys.push(context ? flatKey.split('_')[0] : flatKey);
+      keys.push(context ? flatKey.split(contextSeparator)[0] : flatKey);
     }
   });
 

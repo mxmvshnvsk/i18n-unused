@@ -1,12 +1,17 @@
 import { ApplyFlat, RecursiveStruct } from '../types';
 
+type Options = {
+  flatTranslations: boolean,
+  separator: string,
+};
+
 export const applyToFlatKey = (
   source: RecursiveStruct,
   key: string,
   cb: ApplyFlat,
-  separator = '.',
+  options: Options,
 ): boolean => {
-  const separatedKey = key.split(separator);
+  const separatedKey = options.flatTranslations ? [key] : key.split(options.separator);
   const keyLength = separatedKey.length - 1;
 
   separatedKey.reduce((acc, _k, i) => {

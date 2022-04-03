@@ -31,6 +31,7 @@ export const displayUnusedTranslations = async (
     srcFilesPaths,
     {
       context: config.context,
+      contextSeparator: config.translationContextSeparator,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
@@ -88,6 +89,7 @@ export const displayMissedTranslations = async (
     srcFilesPaths,
     {
       context: config.context,
+      contextSeparator: config.translationContextSeparator,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
