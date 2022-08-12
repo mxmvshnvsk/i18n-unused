@@ -39,6 +39,7 @@ export const markUnusedTranslations = async (
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       excludeTranslationKey: config.excludeKey,
+      translationKeyMatcher: config.translationKeyMatcher,
     },
   );
 
