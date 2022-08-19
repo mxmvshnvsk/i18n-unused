@@ -6,7 +6,12 @@ import { readFileSync, Dirent, promises as FsPromises } from 'fs';
 
 import path from 'path';
 
-import { ModuleResolver, ModuleNameResolver, RecursiveStruct } from '../types';
+import {
+  ModuleResolver,
+  ModuleNameResolver,
+  RecursiveStruct,
+  CustomFileLoader,
+} from '../types';
 
 export const getFileSizeKb = (str: string): number =>
   Buffer.byteLength(str, 'utf8') / 1000;
@@ -20,11 +25,14 @@ export const isSubstrInFile = (filePath: string, substr: string): boolean => {
 export const resolveFile = async (
   filePath: string,
   resolver: ModuleResolver = (m) => m,
+  loader?: CustomFileLoader,
 ): Promise<RecursiveStruct> => {
   const [, ext] = filePath.match(/\.([0-9a-z]+)(?:[?#]|$)/i) || [];
   let m = {};
 
-  if (ext === 'ts') {
+  if (loader) {
+    m = loader(filePath);
+  } else if (ext === 'ts') {
     m = await tsImport.compile(filePath);
   } else if (ext === 'js') {
     let r = createRequire(import.meta.url);
