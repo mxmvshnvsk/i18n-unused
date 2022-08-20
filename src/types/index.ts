@@ -35,6 +35,8 @@ export type TranslationKeyMatcher = RegExp;
 
 export type ModuleResolver = (m: RecursiveStruct) => RecursiveStruct;
 
+export type CustomFileLoader = (filePath: string) => RecursiveStruct;
+
 export type RunOptions = {
   localesExtensions?: string[];
   localesPath?: string;
@@ -48,8 +50,9 @@ export type RunOptions = {
   translationKeyMatcher?: TranslationKeyMatcher;
   localeNameResolver?: ModuleNameResolver;
   localeFileParser?: ModuleResolver;
+  localeFileLoader?: CustomFileLoader;
   context?: boolean;
-  flatTranslations?: boolean,
-  translationSeparator?: string,
-  translationContextSeparator?: string,
+  flatTranslations?: boolean;
+  translationSeparator?: string;
+  translationContextSeparator?: string;
 };

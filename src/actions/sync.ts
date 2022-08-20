@@ -7,6 +7,7 @@ import { RunOptions, RecursiveStruct } from '../types';
 import { initialize } from '../core/initialize';
 import { generateFilesPaths } from '../helpers/files';
 import { checkUncommittedChanges } from '../helpers/git';
+import { importMetaUrl } from '../helpers/meta';
 
 import { GREEN } from '../helpers/consoleColor';
 
@@ -45,7 +46,7 @@ export const syncTranslations = async (
     fileNameResolver: (n) => n === target,
   });
 
-  const r = createRequire(import.meta.url);
+  const r = createRequire(importMetaUrl());
   const sourceLocale = r(sourcePath);
   const targetLocale = r(targetPath);
 

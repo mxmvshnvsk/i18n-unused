@@ -7,6 +7,7 @@ import {
   MissedTranslations,
   ModuleResolver,
   TranslationKeyMatcher,
+  CustomFileLoader,
 } from '../types';
 
 import { resolveFile } from '../helpers/files';
@@ -52,6 +53,7 @@ interface unusedOptions {
   contextSeparator: string;
   ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
+  localeFileLoader?: CustomFileLoader;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
 }
@@ -62,6 +64,7 @@ export const collectUnusedTranslations = async (
   {
     ignoreComments,
     localeFileParser,
+    localeFileLoader,
     excludeTranslationKey,
     contextSeparator,
     context,
@@ -71,7 +74,11 @@ export const collectUnusedTranslations = async (
   const translations: UnusedTranslation = [];
 
   for (const localePath of localesPaths) {
-    const locale = await resolveFile(localePath, localeFileParser);
+    const locale = await resolveFile(
+      localePath,
+      localeFileParser,
+      localeFileLoader,
+    );
     const translationsKeys = generateTranslationsFlatKeys(locale, {
       excludeKey: excludeTranslationKey,
       contextSeparator,
@@ -110,6 +117,7 @@ interface missedOptions {
   contextSeparator: string;
   ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
+  localeFileLoader?: CustomFileLoader;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
 }
@@ -121,6 +129,7 @@ export const collectMissedTranslations = async (
     context,
     ignoreComments,
     localeFileParser,
+    localeFileLoader,
     contextSeparator,
     excludeTranslationKey,
     translationKeyMatcher,
@@ -132,7 +141,11 @@ export const collectMissedTranslations = async (
     ...new Set(
       await localesPaths.reduce(async (asyncAcc, localePath) => {
         const acc = await asyncAcc;
-        const locale = await resolveFile(localePath, localeFileParser);
+        const locale = await resolveFile(
+          localePath,
+          localeFileParser,
+          localeFileLoader,
+        );
         const translationsKeys = generateTranslationsFlatKeys(locale, {
           excludeKey: excludeTranslationKey,
           contextSeparator,
