@@ -12,6 +12,7 @@ import {
   RecursiveStruct,
   CustomFileLoader,
 } from '../types';
+import { importMetaUrl } from './meta';
 
 export const getFileSizeKb = (str: string): number =>
   Buffer.byteLength(str, 'utf8') / 1000;
@@ -35,11 +36,11 @@ export const resolveFile = async (
   } else if (ext === 'ts') {
     m = await tsImport.compile(filePath);
   } else if (ext === 'js') {
-    let r = createRequire(import.meta.url);
+    let r = createRequire(importMetaUrl());
     r = r('esm')(m /*, options*/);
     m = r(filePath);
   } else if (ext === 'json') {
-    const r = createRequire(import.meta.url);
+    const r = createRequire(importMetaUrl());
     m = r(filePath);
   }
 

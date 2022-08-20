@@ -9,6 +9,7 @@ import { collectUnusedTranslations } from '../core/translations';
 import { generateFilesPaths } from '../helpers/files';
 import { applyToFlatKey } from '../core/action';
 import { checkUncommittedChanges } from '../helpers/git';
+import { importMetaUrl } from '../helpers/meta';
 
 import { GREEN } from '../helpers/consoleColor';
 
@@ -49,7 +50,7 @@ export const markUnusedTranslations = async (
   }
 
   unusedTranslations.translations.forEach((translation) => {
-    const r = createRequire(import.meta.url);
+    const r = createRequire(importMetaUrl());
     const locale = r(translation.localePath);
 
     translation.keys.forEach((key) =>
