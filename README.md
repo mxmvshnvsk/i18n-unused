@@ -35,6 +35,7 @@ module.exports = {
 | localesExtensions     | allowed file extensions for locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | file name resolver for locales | no | RegExp, (name: string) => boolean | -
 | localeFileParser      | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
+| localeFileLoader      | load the locale file manually (e.g. for using your own parser) | no | (filePath) => object | -
 | srcPath               | path to search for translations | no | string | `''` (same as run folder)
 | srcExtensions         | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | ignorePaths           | ignored paths, eg: `['src/ignored-folder']`, should start similarly `srcPath` | no | string[] | -
