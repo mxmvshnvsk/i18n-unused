@@ -33,11 +33,13 @@ export type ModuleNameResolver = RegExp | ((n: string) => boolean);
 
 export type TranslationKeyMatcher = RegExp;
 
+export type MissedTranslationParser = RegExp | ((v: string) => string);
+
 export type ModuleResolver = (m: RecursiveStruct) => RecursiveStruct;
 
 export type CustomFileLoader = (filePath: string) => RecursiveStruct;
 
-export type RunOptions = {
+export interface RunOptions {
   localesExtensions?: string[];
   localesPath?: string;
   srcExtensions?: string[];
@@ -55,4 +57,5 @@ export type RunOptions = {
   flatTranslations?: boolean;
   translationSeparator?: string;
   translationContextSeparator?: string;
-};
+  missedTranslationParser?: MissedTranslationParser;
+}

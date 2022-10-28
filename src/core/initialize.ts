@@ -17,6 +17,7 @@ const defaultValues: RunOptions = {
   translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(.*?\)/gi,
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
+  missedTranslationParser: /\(([^)]+)\)/,
 };
 
 export const initialize = async (

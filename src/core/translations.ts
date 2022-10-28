@@ -8,6 +8,7 @@ import {
   ModuleResolver,
   TranslationKeyMatcher,
   CustomFileLoader,
+  MissedTranslationParser,
 } from '../types';
 
 import { resolveFile } from '../helpers/files';
@@ -120,6 +121,7 @@ interface missedOptions {
   localeFileLoader?: CustomFileLoader;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
+  missedTranslationParser: MissedTranslationParser,
 }
 
 export const collectMissedTranslations = async (
@@ -133,6 +135,7 @@ export const collectMissedTranslations = async (
     contextSeparator,
     excludeTranslationKey,
     translationKeyMatcher,
+    missedTranslationParser,
   }: missedOptions,
 ): Promise<MissedTranslations> => {
   const translations: MissedTranslation = [];
@@ -170,12 +173,15 @@ export const collectMissedTranslations = async (
         ) || []
       )
         .map((v) => {
-          const [match] = v.match(/\((.*?)\)/gi);
-          const [translation] = match.split(',');
+          if (typeof missedTranslationParser === 'function') {
+            return missedTranslationParser(v);
+          }
 
-          return translation.replace(/(\(|\)|\[\d\])/gi, '');
+          const [, translation] = v.match(missedTranslationParser) || [];
+
+          return translation;
         })
-        .filter((v) => !flatKeys.includes(replaceQuotes(v)));
+        .filter((v) => v && !flatKeys.includes(replaceQuotes(v)));
 
       if (matchKeys.length) {
         acc[filePath].push(...matchKeys);

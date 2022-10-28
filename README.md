@@ -48,6 +48,7 @@ module.exports = {
 | flatTranslations      | use flat translations, (eg: [Flat JSON](https://www.codeandweb.com/babeledit/documentation/file-formats#flat-json)) | no | boolean | false
 | translationSeparator         | separator for translations using in code | no | string | '.'
 | translationContextSeparator  | separator for i18n context (see `context` option) | no | string | '_'
+| missedTranslationParser  | parser for ejecting value from `translationKeyMatcher` matches | no | RegExp, (v: string) => string | RegExp, match value inside rounded brackets
 
 ## Usage
 

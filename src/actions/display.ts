@@ -97,6 +97,7 @@ export const displayMissedTranslations = async (
       localeFileLoader: config.localeFileLoader,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,
+      missedTranslationParser: config.missedTranslationParser,
     },
   );
 
