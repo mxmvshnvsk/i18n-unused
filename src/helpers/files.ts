@@ -76,20 +76,16 @@ export const generateFilesPaths = async (
   const entries: Dirent[] = await FsPromises.readdir(srcPath, {
     withFileTypes: true,
   });
-
   const files = await entries.reduce(async (accPromise, dirent: Dirent) => {
     const nextPath: string = path.resolve(srcPath, dirent.name);
     const acc = await accPromise;
 
     if (ignorePaths) {
-      const fullBasePath = `${process.cwd()}/${basePath}`;
-      const pathFromSrc = `${nextPath.split(fullBasePath).join(basePath)}${
-        dirent.isDirectory() ? '/' : ''
-      }`;
-
+      const fullBasePath = path.resolve(`${process.cwd()}/${basePath}`);
+      const pathFromBasePath = `${path.relative(fullBasePath, nextPath)}${dirent.isDirectory() ? '/' : ''}`;
       if (
         ignorePaths.some((ignorePath) =>
-          pathFromSrc.startsWith(`${ignorePath}/`),
+        pathFromBasePath.startsWith(`${ignorePath}/`),
         )
       ) {
         return acc;
