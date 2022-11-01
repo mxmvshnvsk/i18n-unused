@@ -18,6 +18,7 @@ const defaultValues: RunOptions = {
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
   missedTranslationParser: /\(([^)]+)\)/,
+  jsonFileIndentValue: 2,
 };
 
 export const initialize = async (

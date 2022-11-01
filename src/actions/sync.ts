@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { createRequire } from 'module';
 
 import { RunOptions, RecursiveStruct } from '../types';
@@ -10,6 +8,7 @@ import { checkUncommittedChanges } from '../helpers/git';
 import { importMetaUrl } from '../helpers/meta';
 
 import { GREEN } from '../helpers/consoleColor';
+import { writeJsonFile } from "../helpers/writeJsonFile";
 
 export const mergeLocaleData = (
   source: RecursiveStruct,
@@ -56,7 +55,7 @@ export const syncTranslations = async (
     checkUncommittedChanges();
   }
 
-  fs.writeFileSync(targetPath, JSON.stringify(mergedLocale, null, 2));
+  writeJsonFile(targetPath, mergedLocale, config);
 
   console.log(GREEN, 'Translations are synchronized');
 
