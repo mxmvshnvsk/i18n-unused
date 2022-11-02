@@ -58,5 +58,5 @@ export interface RunOptions {
   translationSeparator?: string;
   translationContextSeparator?: string;
   missedTranslationParser?: MissedTranslationParser;
-  jsonFileIndentValue: string | number;
+  localeJsonStringifyIndent: string | number;
 }

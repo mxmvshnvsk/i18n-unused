@@ -2,7 +2,7 @@ import { writeFileSync } from "fs";
 import { RecursiveStruct } from "../types";
 
 interface writeJsonFileOptions {
-  jsonFileIndentValue?: string | number;
+  localeJsonStringifyIndent?: string | number;
 }
 
 export const writeJsonFile = (
@@ -10,7 +10,7 @@ export const writeJsonFile = (
   data: RecursiveStruct,
   config: writeJsonFileOptions
 ): void => {
-  const jsonString = JSON.stringify(data, null, config.jsonFileIndentValue);
+  const jsonString = JSON.stringify(data, null, config.localeJsonStringifyIndent);
   const jsonStringWithNewLine = `${jsonString}\n`;
   writeFileSync(filePath, jsonStringWithNewLine);
 };

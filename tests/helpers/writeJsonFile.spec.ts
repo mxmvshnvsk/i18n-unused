@@ -16,7 +16,7 @@ describe('writeJsonFile', () => {
         test: 'value',
       };
       const config: RunOptions = {
-        jsonFileIndentValue: 2,
+        localeJsonStringifyIndent: 2,
       }
 
       writeJsonFile(filePath, jsonData, config);
@@ -27,14 +27,14 @@ describe('writeJsonFile', () => {
     });
   });
 
-  describe('jsonFileIndentValue of 4', () => {
+  describe('localeJsonStringifyIndent of 4', () => {
     it('should indent with 4 spaces', async () => {
       const filePath = '/test-file.json';
       const jsonData = {
         test: 'value',
       };
       const config: RunOptions = {
-        jsonFileIndentValue: 4,
+        localeJsonStringifyIndent: 4,
       }
 
       writeJsonFile(filePath, jsonData, config);
@@ -45,14 +45,14 @@ describe('writeJsonFile', () => {
     });
   });
 
-  describe('jsonFileIndentValue of \t', () => {
+  describe('localeJsonStringifyIndent of \t', () => {
     it('should indent with 1 tab', async () => {
       const filePath = '/test-file.json';
       const jsonData = {
         test: 'value',
       };
       const config: RunOptions = {
-        jsonFileIndentValue: '\t',
+        localeJsonStringifyIndent: '\t',
       }
 
       writeJsonFile(filePath, jsonData, config);
@@ -64,14 +64,14 @@ describe('writeJsonFile', () => {
   });
 
 
-  describe('jsonFileIndentValue of `indent`', () => {
+  describe('localeJsonStringifyIndent of `indent`', () => {
     it('should indent with the string `indent`', async () => {
       const filePath = '/test-file.json';
       const jsonData = {
         test: 'value',
       };
       const config: RunOptions = {
-        jsonFileIndentValue: 'indent',
+        localeJsonStringifyIndent: 'indent',
       }
 
       writeJsonFile(filePath, jsonData, config);

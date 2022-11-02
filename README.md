@@ -49,7 +49,7 @@ module.exports = {
 | translationSeparator         | separator for translations using in code | no | string | '.'
 | translationContextSeparator  | separator for i18n context (see `context` option) | no | string | '_'
 | missedTranslationParser  | parser for ejecting value from `translationKeyMatcher` matches | no | RegExp, (v: string) => string | RegExp, match value inside rounded brackets
-| jsonFileIndentValue  | json indent value for writing json file, either a number of spaces, or a string to indent with. (i.e. `2`, `4`, `\t`) | no | string , number | `2`
+| localeJsonStringifyIndent  | json indent value for writing json file, either a number of spaces, or a string to indent with. (i.e. `2`, `4`, `\t`) | no | string , number | `2`
 
 ## Usage
 
