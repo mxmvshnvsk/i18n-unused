@@ -1,5 +1,3 @@
-import { writeFileSync } from 'fs';
-
 import { createRequire } from 'module';
 
 import { RunOptions, UnusedTranslations } from '../types';
@@ -12,6 +10,7 @@ import { checkUncommittedChanges } from '../helpers/git';
 import { importMetaUrl } from '../helpers/meta';
 
 import { GREEN } from '../helpers/consoleColor';
+import { writeJsonFile } from "../helpers/writeJsonFile";
 
 export const markUnusedTranslations = async (
   options: RunOptions,
@@ -67,7 +66,7 @@ export const markUnusedTranslations = async (
       ),
     );
 
-    writeFileSync(translation.localePath, JSON.stringify(locale, null, 2));
+    writeJsonFile(translation.localePath, locale, config);
 
     console.log(GREEN, `Successfully marked: ${translation.localePath}`);
   });
