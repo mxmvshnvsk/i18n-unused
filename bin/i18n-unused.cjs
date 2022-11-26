@@ -9,17 +9,10 @@ const {
   removeUnusedTranslations,
   markUnusedTranslations,
   syncTranslations,
+  parseRegex
 } = require('../dist/i18n-unused.cjs');
 
-/**
- * Transform the escaped string provided into a valid regex
- * @param {string} str
- * @return {RegExp}
- */
-const parseRegex = (str) => {
-  const parts = str.split("/");
-  return new RegExp(`${parts[1]}`.replace(/\\\\/g, "\\"), parts[2]);
-}
+
 
 program.description(description);
 

@@ -8,3 +8,4 @@ export { syncTranslations } from './actions/sync';
 
 export { collectUnusedTranslations } from './core/translations';
 export { generateFilesPaths } from './helpers/files';
+export { parseRegex } from './helpers/parseRegex';

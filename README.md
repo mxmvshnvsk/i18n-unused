@@ -27,6 +27,8 @@ module.exports = {
   srcPath: 'src',
 };
 ```
+For ES-Modules (esm) use `i18n-unused.config.cjs`. You can also use the `.json` with no support for callbacks.
+
 ### Configuration options
 
 | Option name | <div style="width: 280px">Description</div> | Required | Type | <div style="min-width: 100px">Default value</div> |
@@ -62,6 +64,12 @@ Display unused translations:
 ```bash
 i18n-unused display-unused
 ```
+
+Display unused translations for [mashpie/i18n-node](https://github.com/mashpie/i18n-node):
+```bash
+i18n-unused display-unused --translation-key-matcher '/(?:[$ .](__))\(.*?\)/gi'
+```
+
 
 Mark unused translations via `[UNUSED]` or marker from config (works only with `json` for now):
 ```bash
