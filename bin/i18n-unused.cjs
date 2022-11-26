@@ -11,6 +11,16 @@ const {
   syncTranslations,
 } = require('../dist/i18n-unused.cjs');
 
+/**
+ * Transform the escaped string provided into a valid regex
+ * @param {string} str
+ * @return {RegExp}
+ */
+const parseRegex = (str) => {
+  const parts = str.split("/");
+  return new RegExp(`${parts[1]}`.replace(/\\\\/g, "\\"), parts[2]);
+}
+
 program.description(description);
 
 program.version(version, '-v --version', 'output version');
@@ -18,6 +28,7 @@ program.version(version, '-v --version', 'output version');
 program
   .option('-sExt, --src-extensions [srcExtensions...]', 'files extensions, which includes for searching (ext ext ext; by default: js, ts, jsx, tsx, vue)')
   .option('-lExt, --locales-extensions [localesExtensions...]', 'locales files extensions (ext,ext,ext; by default: json)')
+  .option('-lExt, --translation-key-matcher <translationKeyMatcher>', '{string} locales matcher to search for translation keys in files by default: \'/(?:[$ .](_|t|tc|i18nKey))\\(.*?\\)/gi\'', parseRegex)
   .option('-sPath, --src-path <srcPath>', 'path to source of code (path, ex. \'src\')')
   .option('-lPath, --locales-path <localesPath>', 'path to locales (path, ex. \'src/locales\')');
 
