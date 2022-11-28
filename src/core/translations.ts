@@ -88,12 +88,12 @@ export const collectUnusedTranslations = async (
 
     srcFilesPaths.forEach((filePath: string) => {
       const file = readFileSync(filePath).toString();
+      const matchKeys =
+        (ignoreComments ? removeComments(file) : file).match(
+          translationKeyMatcher,
+        ) || [];
 
       [...translationsKeys].forEach((key: string) => {
-        const matchKeys =
-          (ignoreComments ? removeComments(file) : file).match(
-            translationKeyMatcher,
-          ) || [];
         if ([...new Set(matchKeys)].toString().includes(key)) {
           translationsKeys.splice(translationsKeys.indexOf(key), 1);
         }
