@@ -27,6 +27,8 @@ module.exports = {
   srcPath: 'src',
 };
 ```
+For ES-Modules (esm) use `i18n-unused.config.cjs`. You can also use the `.json` with no support for callbacks.
+
 ### Configuration options
 
 | Option name | <div style="width: 280px">Description</div> | Required | Type | <div style="min-width: 100px">Default value</div> |
@@ -39,7 +41,7 @@ module.exports = {
 | srcPath               | path to search for translations | no | string | `''` (same as run folder)
 | srcExtensions         | allowed file extensions for translations | no | string[] | ['js', 'ts', 'jsx', 'tsx', 'vue']
 | ignorePaths           | ignored paths, eg: `['src/ignored-folder']`, should start similarly `srcPath` | no | string[] | -
-| translationKeyMatcher | matcher to searching for translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc`, `tc` and `i18nKey`
+| translationKeyMatcher | matcher to search for translation keys in files | no | RegExp | RegExp, match `$_`, `$t`, `t`, `$tc`, `tc` and `i18nKey`
 | excludeKey            | doesn't process translations that include passed key(s), for example if you set `excludeKey: '.props.'`, script will ignore `Button.props.value`. | no | string, string[] | -
 | ignoreComments        | Ignore code comments in src files. | no | boolean | false
 | marker                | special string to mark unused translations, it'll added via `mark-unused` | no | string | '[UNUSED]'
@@ -62,6 +64,12 @@ Display unused translations:
 ```bash
 i18n-unused display-unused
 ```
+
+Display unused translations for [mashpie/i18n-node](https://github.com/mashpie/i18n-node):
+```bash
+i18n-unused display-unused --translation-key-matcher '/(?:[$ .](__))\(.*?\)/gi'
+```
+
 
 Mark unused translations via `[UNUSED]` or marker from config (works only with `json` for now):
 ```bash

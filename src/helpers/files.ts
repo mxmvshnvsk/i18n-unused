@@ -35,7 +35,7 @@ export const resolveFile = async (
     m = loader(filePath);
   } else if (ext === 'ts') {
     m = await tsImport.compile(filePath);
-  } else if (ext === 'js') {
+  } else if (["js", "cjs"].includes(ext)) {
     let r = createRequire(importMetaUrl());
     r = r('esm')(m /*, options*/);
     m = r(filePath);
