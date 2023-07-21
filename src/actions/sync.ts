@@ -1,14 +1,14 @@
-import { createRequire } from 'module';
+import { createRequire } from "module";
 
-import { RunOptions, RecursiveStruct } from '../types';
+import { RunOptions, RecursiveStruct } from "../types";
 
-import { initialize } from '../core/initialize';
-import { generateFilesPaths } from '../helpers/files';
-import { checkUncommittedChanges } from '../helpers/git';
-import { importMetaUrl } from '../helpers/meta';
+import { initialize } from "../core/initialize";
+import { generateFilesPaths } from "../helpers/files";
+import { checkUncommittedChanges } from "../helpers/git";
+import { importMetaUrl } from "../helpers/meta";
 
-import { GREEN } from '../helpers/consoleColor';
-import { writeJsonFile } from '../helpers/writeJsonFile';
+import { GREEN } from "../helpers/consoleColor";
+import { writeJsonFile } from "../helpers/writeJsonFile";
 
 export const mergeLocaleData = (
   source: RecursiveStruct,
@@ -17,7 +17,7 @@ export const mergeLocaleData = (
   const keys = Object.keys(source);
 
   keys.forEach((key) => {
-    if (typeof source[key] === 'object') {
+    if (typeof source[key] === "object") {
       target[key] = target[key] || {};
       mergeLocaleData(
         source[key] as RecursiveStruct,
@@ -57,7 +57,7 @@ export const syncTranslations = async (
 
   writeJsonFile(targetPath, mergedLocale, config);
 
-  console.log(GREEN, 'Translations are synchronized');
+  console.log(GREEN, "Translations are synchronized");
 
   return true;
 };

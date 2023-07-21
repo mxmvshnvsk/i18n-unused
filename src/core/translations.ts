@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
 import {
   UnusedTranslation,
@@ -9,17 +9,17 @@ import {
   TranslationKeyMatcher,
   CustomFileLoader,
   MissedTranslationParser,
-} from '../types';
+} from "../types";
 
-import { resolveFile } from '../helpers/files';
-import { generateTranslationsFlatKeys } from '../helpers/flatKeys';
+import { resolveFile } from "../helpers/files";
+import { generateTranslationsFlatKeys } from "../helpers/flatKeys";
 
-const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, '');
+const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, "");
 
-const isStaticKey = (v: string): boolean => !v.includes('${') && /['"]/.test(v);
+const isStaticKey = (v: string): boolean => !v.includes("${") && /['"]/.test(v);
 
 const isDynamicKey = (v: string): boolean =>
-  v.includes('${') || !/['"]/.test(v);
+  v.includes("${") || !/['"]/.test(v);
 
 const isInlineComment = (str: string): boolean => /^(\/\/)/.test(str);
 const isHTMLComment = (str: string): boolean => /^(<!--)/.test(str);
@@ -30,7 +30,7 @@ const removeComments = (fileTxt: string): string => {
   let skip = false;
 
   return fileTxt
-    .split('\n')
+    .split("\n")
     .reduce((acc, str) => {
       const _str = str.trim();
 
@@ -46,7 +46,7 @@ const removeComments = (fileTxt: string): string => {
 
       return acc;
     }, [])
-    .join('\n');
+    .join("\n");
 };
 
 interface unusedOptions {
@@ -173,7 +173,7 @@ export const collectMissedTranslations = async (
         ) || []
       )
         .map((v) => {
-          if (typeof missedTranslationParser === 'function') {
+          if (typeof missedTranslationParser === "function") {
             return missedTranslationParser(v);
           }
 

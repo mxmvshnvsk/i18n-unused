@@ -1,4 +1,4 @@
-import { ApplyFlat, RecursiveStruct } from '../types';
+import { ApplyFlat, RecursiveStruct } from "../types";
 
 type Options = {
   flatTranslations: boolean;

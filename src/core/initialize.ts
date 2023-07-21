@@ -1,21 +1,21 @@
 /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
 
-import { resolveFile } from '../helpers/files';
+import { resolveFile } from "../helpers/files";
 
-import { RunOptions, RecursiveStruct } from '../types';
-import fs from 'fs';
-import { parseRegex } from '../helpers/parseRegex';
+import { RunOptions, RecursiveStruct } from "../types";
+import fs from "fs";
+import { parseRegex } from "../helpers/parseRegex";
 
 const defaultValues: RunOptions = {
-  srcPath: '',
+  srcPath: "",
   context: true,
-  excludeKey: '',
-  marker: '[UNUSED]',
+  excludeKey: "",
+  marker: "[UNUSED]",
   ignoreComments: false,
   flatTranslations: false,
-  translationSeparator: '.',
-  translationContextSeparator: '_',
-  srcExtensions: ['js', 'ts', 'jsx', 'tsx', 'vue'],
+  translationSeparator: ".",
+  translationContextSeparator: "_",
+  srcExtensions: ["js", "ts", "jsx", "tsx", "vue"],
   translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(.*?\)/gi,
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
@@ -33,17 +33,17 @@ export const initialize = async (
 
     let configFile: Partial<RunOptions> = {};
 
-    for (const ext of ['js', 'cjs', 'json']) {
+    for (const ext of ["js", "cjs", "json"]) {
       const path = `${base}/i18n-unused.config.${ext}`;
       if (fs.existsSync(path)) {
         configFile = await resolveFile(path);
         // ⛔ There is no safe/reliable way to parse a function
         // ✔ When the file is a JSON need to parse the regex
-        if (ext === 'json') {
+        if (ext === "json") {
           const potentialRegex = [
-            'translationKeyMatcher',
-            'missedTranslationParser',
-            'localeNameResolver',
+            "translationKeyMatcher",
+            "missedTranslationParser",
+            "localeNameResolver",
           ];
           potentialRegex.forEach((value) => {
             if (Object.prototype.hasOwnProperty.call(configFile, value)) {
@@ -59,11 +59,11 @@ export const initialize = async (
   } catch (e) {}
 
   if (!config.localesPath) {
-    throw new Error('Locales path is required');
+    throw new Error("Locales path is required");
   }
 
   if (!config.localesExtensions && !config.localeNameResolver) {
-    config.localesExtensions = ['json'];
+    config.localesExtensions = ["json"];
   }
 
   return { ...defaultValues, ...config };

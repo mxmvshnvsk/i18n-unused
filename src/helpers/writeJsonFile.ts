@@ -1,5 +1,5 @@
-import { writeFileSync } from 'fs';
-import { RecursiveStruct } from '../types';
+import { writeFileSync } from "fs";
+import { RecursiveStruct } from "../types";
 
 interface writeJsonFileOptions {
   localeJsonStringifyIndent?: string | number;
