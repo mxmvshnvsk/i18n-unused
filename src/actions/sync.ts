@@ -8,7 +8,7 @@ import { checkUncommittedChanges } from '../helpers/git';
 import { importMetaUrl } from '../helpers/meta';
 
 import { GREEN } from '../helpers/consoleColor';
-import { writeJsonFile } from "../helpers/writeJsonFile";
+import { writeJsonFile } from '../helpers/writeJsonFile';
 
 export const mergeLocaleData = (
   source: RecursiveStruct,

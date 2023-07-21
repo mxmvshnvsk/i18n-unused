@@ -121,7 +121,7 @@ interface missedOptions {
   localeFileLoader?: CustomFileLoader;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
-  missedTranslationParser: MissedTranslationParser,
+  missedTranslationParser: MissedTranslationParser;
 }
 
 export const collectMissedTranslations = async (

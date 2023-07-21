@@ -4,19 +4,13 @@ interface Options {
   parent?: string;
   keys?: string[];
   context: boolean;
-  contextSeparator: string,
+  contextSeparator: string;
   excludeKey?: string | string[];
 }
 
 export const generateTranslationsFlatKeys = (
   source: RecursiveStruct,
-  {
-    parent,
-    keys = [],
-    excludeKey,
-    context,
-    contextSeparator,
-  }: Options,
+  { parent, keys = [], excludeKey, context, contextSeparator }: Options,
 ): string[] => {
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key;

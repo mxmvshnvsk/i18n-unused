@@ -35,7 +35,7 @@ export const resolveFile = async (
     m = loader(filePath);
   } else if (ext === 'ts') {
     m = await tsImport.compile(filePath);
-  } else if (["js", "cjs"].includes(ext)) {
+  } else if (['js', 'cjs'].includes(ext)) {
     let r = createRequire(importMetaUrl());
     r = r('esm')(m /*, options*/);
     m = r(filePath);
@@ -82,10 +82,12 @@ export const generateFilesPaths = async (
 
     if (ignorePaths) {
       const fullBasePath = path.resolve(`${process.cwd()}/${basePath}`);
-      const pathFromBasePath = `${path.relative(fullBasePath, nextPath)}${dirent.isDirectory() ? '/' : ''}`;
+      const pathFromBasePath = `${path.relative(fullBasePath, nextPath)}${
+        dirent.isDirectory() ? '/' : ''
+      }`;
       if (
         ignorePaths.some((ignorePath) =>
-        pathFromBasePath.startsWith(`${ignorePath}/`),
+          pathFromBasePath.startsWith(`${ignorePath}/`),
         )
       ) {
         return acc;
