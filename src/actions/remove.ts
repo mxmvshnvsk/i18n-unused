@@ -39,6 +39,7 @@ export const removeUnusedTranslations = async (
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       localeFileLoader: config.localeFileLoader,
+      customChecker: config.customChecker,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,
     },

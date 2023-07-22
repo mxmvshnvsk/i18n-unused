@@ -9,6 +9,7 @@ import {
   TranslationKeyMatcher,
   CustomFileLoader,
   MissedTranslationParser,
+  CustomChecker,
 } from "../types";
 
 import { resolveFile } from "../helpers/files";
@@ -55,6 +56,7 @@ interface unusedOptions {
   ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
   localeFileLoader?: CustomFileLoader;
+  customChecker: CustomChecker;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
 }
@@ -66,6 +68,7 @@ export const collectUnusedTranslations = async (
     ignoreComments,
     localeFileParser,
     localeFileLoader,
+    customChecker,
     excludeTranslationKey,
     contextSeparator,
     context,
@@ -93,11 +96,17 @@ export const collectUnusedTranslations = async (
           translationKeyMatcher,
         ) || [];
 
-      [...translationsKeys].forEach((key: string) => {
-        if ([...new Set(matchKeys)].toString().includes(key)) {
-          translationsKeys.splice(translationsKeys.indexOf(key), 1);
-        }
-      });
+      const matchKeysSet = new Set(matchKeys);
+
+      if (customChecker) {
+        customChecker(matchKeysSet, translationsKeys);
+      } else {
+        [...translationsKeys].forEach((key: string) => {
+          if ([...matchKeysSet].toString().includes(key)) {
+            translationsKeys.splice(translationsKeys.indexOf(key), 1);
+          }
+        });
+      }
     });
 
     translations.push({

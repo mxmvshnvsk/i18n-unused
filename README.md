@@ -36,6 +36,7 @@ For ES-Modules (esm) use `i18n-unused.config.cjs`. You can also use the `.json` 
 | localesPath           | path to search for locales | yes | string | -
 | localesExtensions     | allowed file extensions for locales | no | string[] | if not set `localeNameResolver`: ['json']
 | localeNameResolver    | file name resolver for locales | no | RegExp, (name: string) => boolean | -
+| customChecker         | function to check if a key is used, if so the key should be removed from translationsKeys | no | fn, (matchedKeys: Set\<string\>, translationsKeys: string[] => void) | A defined validations will be applied |
 | localeFileParser      | resolve locale imports, for example if you use named imports from locales files, just wrap it to your own resolver | no | (module) => module | fn, return `module.default` or `module`
 | localeFileLoader      | load the locale file manually (e.g. for using your own parser) | no | (filePath) => object | -
 | srcPath               | path to search for translations | no | string | `''` (same as run folder)
