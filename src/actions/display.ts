@@ -1,11 +1,11 @@
-import { RunOptions, UnusedTranslations, MissedTranslations } from '../types';
+import { RunOptions, UnusedTranslations, MissedTranslations } from "../types";
 
-import { initialize } from '../core/initialize';
+import { initialize } from "../core/initialize";
 import {
   collectUnusedTranslations,
   collectMissedTranslations,
-} from '../core/translations';
-import { generateFilesPaths, getFileSizeKb } from '../helpers/files';
+} from "../core/translations";
+import { generateFilesPaths, getFileSizeKb } from "../helpers/files";
 
 export const displayUnusedTranslations = async (
   options: RunOptions,
@@ -35,6 +35,7 @@ export const displayUnusedTranslations = async (
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       localeFileLoader: config.localeFileLoader,
+      customChecker: config.customChecker,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,
     },
@@ -42,7 +43,7 @@ export const displayUnusedTranslations = async (
 
   unusedTranslations.translations.forEach((translation) => {
     console.log(
-      '<<<==========================================================>>>',
+      "<<<==========================================================>>>",
     );
     console.log(`Unused translations in: ${translation.localePath}`);
     console.log(`Unused translations count: ${translation.count}`);
@@ -58,8 +59,8 @@ export const displayUnusedTranslations = async (
   console.log(
     `Can free up memory: ~${getFileSizeKb(
       unusedTranslations.translations.reduce(
-        (acc, { keys }) => `${acc}, ${keys.join(', ')}`,
-        '',
+        (acc, { keys }) => `${acc}, ${keys.join(", ")}`,
+        "",
       ),
     )}kb`,
   );
@@ -103,7 +104,7 @@ export const displayMissedTranslations = async (
 
   missedTranslations.translations.forEach((translation) => {
     console.log(
-      '<<<==========================================================>>>',
+      "<<<==========================================================>>>",
     );
 
     console.log(`Missed translations in: ${translation.filePath}`);
@@ -113,15 +114,15 @@ export const displayMissedTranslations = async (
     );
 
     if (translation.staticKeys.length) {
-      console.log('--------------------------------------------');
-      console.log('Static keys:');
+      console.log("--------------------------------------------");
+      console.log("Static keys:");
       console.table(
         translation.staticKeys.map((key: string) => ({ Key: key })),
       );
     }
     if (translation.dynamicKeys.length) {
-      console.log('--------------------------------------------');
-      console.log('Dynamic keys:');
+      console.log("--------------------------------------------");
+      console.log("Dynamic keys:");
       console.table(
         translation.dynamicKeys.map((key: string) => ({ Key: key })),
       );

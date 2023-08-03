@@ -39,6 +39,11 @@ export type ModuleResolver = (m: RecursiveStruct) => RecursiveStruct;
 
 export type CustomFileLoader = (filePath: string) => RecursiveStruct;
 
+export type CustomChecker = (
+  matchKeys: Set<string>,
+  translationsKeys: string[],
+) => void;
+
 export interface RunOptions {
   localesExtensions?: string[];
   localesPath?: string;
@@ -53,6 +58,7 @@ export interface RunOptions {
   localeNameResolver?: ModuleNameResolver;
   localeFileParser?: ModuleResolver;
   localeFileLoader?: CustomFileLoader;
+  customChecker?: CustomChecker;
   context?: boolean;
   flatTranslations?: boolean;
   translationSeparator?: string;

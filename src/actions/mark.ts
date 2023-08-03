@@ -1,15 +1,15 @@
-import { createRequire } from 'module';
+import { createRequire } from "module";
 
-import { RunOptions, UnusedTranslations } from '../types';
+import { RunOptions, UnusedTranslations } from "../types";
 
-import { initialize } from '../core/initialize';
-import { collectUnusedTranslations } from '../core/translations';
-import { generateFilesPaths } from '../helpers/files';
-import { applyToFlatKey } from '../core/action';
-import { checkUncommittedChanges } from '../helpers/git';
-import { importMetaUrl } from '../helpers/meta';
+import { initialize } from "../core/initialize";
+import { collectUnusedTranslations } from "../core/translations";
+import { generateFilesPaths } from "../helpers/files";
+import { applyToFlatKey } from "../core/action";
+import { checkUncommittedChanges } from "../helpers/git";
+import { importMetaUrl } from "../helpers/meta";
 
-import { GREEN } from '../helpers/consoleColor';
+import { GREEN } from "../helpers/consoleColor";
 import { writeJsonFile } from "../helpers/writeJsonFile";
 
 export const markUnusedTranslations = async (
@@ -18,7 +18,7 @@ export const markUnusedTranslations = async (
   const config = await initialize(options);
 
   const localesFilesPaths = await generateFilesPaths(config.localesPath, {
-    srcExtensions: ['json'], // @TODO implement other types when add other types writes
+    srcExtensions: ["json"], // @TODO implement other types when add other types writes
   });
 
   const srcFilesPaths = await generateFilesPaths(
@@ -39,6 +39,7 @@ export const markUnusedTranslations = async (
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       localeFileLoader: config.localeFileLoader,
+      customChecker: config.customChecker,
       excludeTranslationKey: config.excludeKey,
       translationKeyMatcher: config.translationKeyMatcher,
     },
