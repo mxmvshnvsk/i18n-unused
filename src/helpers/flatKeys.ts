@@ -35,19 +35,22 @@ export const generateTranslationsFlatKeys = (
     } else {
       keys.push(
         context
-          ? getKeyWithoutContext(key, contextSeparator, contextMatcher)
+          ? getKeyWithoutContext(flatKey, contextSeparator, contextMatcher)
           : flatKey,
       );
     }
   });
 
-  return excludeKey
+  const resultKeys = excludeKey
     ? keys.filter((k: string) =>
         typeof excludeKey === "string"
           ? !k.includes(excludeKey)
           : excludeKey.every((ek) => !k.includes(ek)),
       )
     : keys;
+
+  // The context removal can cause duplicates, so we need to remove them
+  return [...new Set(resultKeys)];
 };
 
 /**
@@ -56,15 +59,19 @@ export const generateTranslationsFlatKeys = (
  * Makes sure translation keys like `some_key_i_have` is not treated as context.
  */
 const getKeyWithoutContext = (
-  key: string,
+  flatKey: string,
   contextSeparator: string,
   contextMatcher: RegExp,
 ) => {
-  const splitted = key.split(contextSeparator);
-  if (splitted.length === 1) return key;
+  const splitted = flatKey.split(contextSeparator);
+  if (splitted.length === 1) return flatKey;
+
   const lastPart = splitted[splitted.length - 1];
+
+  // If the last part is a context, remove it
   if (lastPart.match(contextMatcher)) {
-    return splitted.slice(0, splitted.length - 1).join(contextSeparator);
+    return splitted.slice(0, splitted.length - 2).join(contextSeparator);
   }
+  // Otherwise, join all parts
   return splitted.join(contextSeparator);
 };

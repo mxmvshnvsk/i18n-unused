@@ -104,8 +104,10 @@ export const collectUnusedTranslations = async (
       if (customChecker) {
         customChecker(matchKeysSet, translationsKeys);
       } else {
-        [...translationsKeys].forEach((key: string) => {
-          if ([...matchKeysSet].toString().includes(key)) {
+        const matchKeysSetArrStr = [...matchKeysSet].toString();
+
+        [...translationsKeys].forEach((key) => {
+          if (matchKeysSetArrStr.includes(key)) {
             translationsKeys.splice(translationsKeys.indexOf(key), 1);
           }
         });
