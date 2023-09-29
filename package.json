@@ -7,6 +7,7 @@
   "bin": "bin/i18n-unused.cjs",
   "main": "dist/i18n-unused.cjs",
   "module": "dist/i18n-unused.js",
+  "types": "dist/index.d.ts",
   "exports": {
     "require": "./dist/i18n-unused.cjs",
     "import": "./dist/i18n-unused.js"
