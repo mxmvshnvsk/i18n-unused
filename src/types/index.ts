@@ -63,6 +63,7 @@ export interface RunOptions {
   flatTranslations?: boolean;
   translationSeparator?: string;
   translationContextSeparator?: string;
+  translationContextMatcher?: RegExp;
   missedTranslationParser?: MissedTranslationParser;
   localeJsonStringifyIndent: string | number;
 }

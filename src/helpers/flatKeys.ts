@@ -5,12 +5,20 @@ interface Options {
   keys?: string[];
   context: boolean;
   contextSeparator: string;
+  contextMatcher: RegExp;
   excludeKey?: string | string[];
 }
 
 export const generateTranslationsFlatKeys = (
   source: RecursiveStruct,
-  { parent, keys = [], excludeKey, context, contextSeparator }: Options,
+  {
+    parent,
+    keys = [],
+    excludeKey,
+    context,
+    contextSeparator,
+    contextMatcher,
+  }: Options,
 ): string[] => {
   Object.keys(source).forEach((key) => {
     const flatKey = parent ? `${parent}.${key}` : key;
@@ -21,10 +29,15 @@ export const generateTranslationsFlatKeys = (
         parent: flatKey,
         excludeKey,
         context,
+        contextMatcher,
         keys,
       });
     } else {
-      keys.push(context ? flatKey.split(contextSeparator)[0] : flatKey);
+      keys.push(
+        context
+          ? getKeyWithoutContext(key, contextSeparator, contextMatcher)
+          : flatKey,
+      );
     }
   });
 
@@ -35,4 +48,23 @@ export const generateTranslationsFlatKeys = (
           : excludeKey.every((ek) => !k.includes(ek)),
       )
     : keys;
+};
+
+/**
+ * Removes context from key.
+ *
+ * Makes sure translation keys like `some_key_i_have` is not treated as context.
+ */
+const getKeyWithoutContext = (
+  key: string,
+  contextSeparator: string,
+  contextMatcher: RegExp,
+) => {
+  const splitted = key.split(contextSeparator);
+  if (splitted.length === 1) return key;
+  const lastPart = splitted[splitted.length - 1];
+  if (lastPart.match(contextMatcher)) {
+    return splitted.slice(0, splitted.length - 1).join(contextSeparator);
+  }
+  return splitted.join(contextSeparator);
 };
