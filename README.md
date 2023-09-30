@@ -22,6 +22,7 @@ yarn add --dev i18n-unused
 Add config `i18n-unused.config.js` to your root folder:
 
 ```javascript
+/** @type {import('i18n-unused').RunOptions} */
 module.exports = {
   localesPath: 'src/locales',
   srcPath: 'src',
@@ -51,6 +52,7 @@ For ES-Modules (esm) use `i18n-unused.config.cjs`. You can also use the `.json` 
 | flatTranslations      | use flat translations, (eg: [Flat JSON](https://www.codeandweb.com/babeledit/documentation/file-formats#flat-json)) | no | boolean | false
 | translationSeparator         | separator for translations using in code | no | string | '.'
 | translationContextSeparator  | separator for i18n context (see `context` option) | no | string | '_'
+| translationContextMatcher | matcher to search for context endings | no | RegExp | RegExp, match `zero`, `one`, `two`, `few`, `many`, `other`, `male`, `female`, `0`, `1`, `2`, `3`, `4`, `5`, `plural`, `11` and `100`
 | missedTranslationParser  | parser for ejecting value from `translationKeyMatcher` matches | no | RegExp, (v: string) => string | RegExp, match value inside rounded brackets
 | localeJsonStringifyIndent  | json indent value for writing json file, either a number of spaces, or a string to indent with. (i.e. `2`, `4`, `\t`) | no | string , number | `2`
 

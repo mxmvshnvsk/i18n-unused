@@ -32,6 +32,7 @@ export const displayUnusedTranslations = async (
     {
       context: config.context,
       contextSeparator: config.translationContextSeparator,
+      contextMatcher: config.translationContextMatcher,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       localeFileLoader: config.localeFileLoader,
@@ -93,6 +94,7 @@ export const displayMissedTranslations = async (
     {
       context: config.context,
       contextSeparator: config.translationContextSeparator,
+      contextMatcher: config.translationContextMatcher,
       ignoreComments: config.ignoreComments,
       localeFileParser: config.localeFileParser,
       localeFileLoader: config.localeFileLoader,

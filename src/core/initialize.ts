@@ -15,6 +15,9 @@ const defaultValues: RunOptions = {
   flatTranslations: false,
   translationSeparator: ".",
   translationContextSeparator: "_",
+  // Based on https://www.i18next.com/misc/json-format
+  translationContextMatcher:
+    /^(zero|one|two|few|many|other|male|female|0|1|2|3|4|5|plural|11|100)$/,
   srcExtensions: ["js", "ts", "jsx", "tsx", "vue"],
   translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(.*?\)/gi,
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
@@ -41,6 +44,7 @@ export const initialize = async (
         // ✔ When the file is a JSON need to parse the regex
         if (ext === "json") {
           const potentialRegex = [
+            "translationContextMatcher",
             "translationKeyMatcher",
             "missedTranslationParser",
             "localeNameResolver",
