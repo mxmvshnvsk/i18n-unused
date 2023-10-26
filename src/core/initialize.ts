@@ -19,7 +19,7 @@ const defaultValues: RunOptions = {
   translationContextMatcher:
     /^(zero|one|two|few|many|other|male|female|0|1|2|3|4|5|plural|11|100)$/,
   srcExtensions: ["js", "ts", "jsx", "tsx", "vue"],
-  translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(.*?\)/gi,
+  translationKeyMatcher: /(?:[$ .](_|t|tc|i18nKey))\(([\n\r\s]|.)*?\)/gi,
   localeFileParser: (m: RecursiveStruct): RecursiveStruct =>
     (m.default || m) as RecursiveStruct,
   missedTranslationParser: /\(([^)]+)\)/,
