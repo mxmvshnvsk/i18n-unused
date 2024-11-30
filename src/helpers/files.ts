@@ -23,6 +23,11 @@ export const isSubstrInFile = (filePath: string, substr: string): boolean => {
   return file.includes(substr);
 };
 
+const isNodeVersion22OrAbove = () => {
+  const version = process.version.match(/^v(\d+)/);
+  return version && parseInt(version[1], 10) >= 22;
+};
+
 export const resolveFile = async (
   filePath: string,
   resolver: ModuleResolver = (m) => m,
@@ -37,7 +42,9 @@ export const resolveFile = async (
     m = await tsImport.compile(filePath);
   } else if (["js", "cjs"].includes(ext)) {
     let r = createRequire(importMetaUrl());
-    r = r("esm")(m /*, options*/);
+    if (!isNodeVersion22OrAbove()) {
+      r = r("esm")(m /*, options*/);
+    }
     m = r(filePath);
   } else if (ext === "json") {
     const r = createRequire(importMetaUrl());
