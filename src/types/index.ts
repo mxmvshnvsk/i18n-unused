@@ -147,4 +147,16 @@ export interface RunOptions {
    * @default 2
    */
   localeJsonStringifyIndent: string | number;
+
+  /**
+   * Occur error when found unused translations
+   * @default false
+   */
+  throwErrorOnUnused?: boolean;
+
+  /**
+   * Occur error when found missed translations
+   * @default false
+   */
+  throwErrorOnMissed?: boolean;
 }
