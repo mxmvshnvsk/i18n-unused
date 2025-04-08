@@ -149,13 +149,13 @@ export interface RunOptions {
   localeJsonStringifyIndent: string | number;
 
   /**
-   * Occur error when found unused translations
+   * Throw error when found unused translations
    * @default false
    */
   throwErrorOnUnused?: boolean;
 
   /**
-   * Occur error when found missed translations
+   * Throw error when found missed translations
    * @default false
    */
   throwErrorOnMissed?: boolean;
