@@ -66,6 +66,14 @@ export const displayUnusedTranslations = async (
     )}kb`,
   );
 
+  if (config.throwErrorOnUnused) {
+    throw new Error(
+      `Unused translations found in ${unusedTranslations.translations.map(
+        ({ localePath }) => localePath,
+      )}`,
+    );
+  }
+
   return unusedTranslations;
 };
 
@@ -137,6 +145,14 @@ export const displayMissedTranslations = async (
   console.log(
     `Total missed dynamic translations count: ${missedTranslations.totalDynamicCount}`,
   );
+
+  if (config.throwErrorOnMissed) {
+    throw new Error(
+      `Missed translations found in ${missedTranslations.translations.map(
+        ({ filePath }) => filePath,
+      )}`,
+    );
+  }
 
   return missedTranslations;
 };
