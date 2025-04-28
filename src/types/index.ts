@@ -152,11 +152,11 @@ export interface RunOptions {
    * Throw error when found unused translations
    * @default false
    */
-  exitErrorOnUnused?: boolean;
+  failOnUnused?: boolean;
 
   /**
    * Throw error when found missed translations
    * @default false
    */
-  exitErrorOnMissed?: boolean;
+  failOnMissed?: boolean;
 }

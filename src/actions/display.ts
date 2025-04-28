@@ -66,7 +66,7 @@ export const displayUnusedTranslations = async (
     )}kb`,
   );
 
-  if (config.exitErrorOnUnused && unusedTranslations.totalCount > 0) {
+  if (config.failOnUnused && unusedTranslations.totalCount > 0) {
     process.exitCode = 1;
   }
 
@@ -143,7 +143,7 @@ export const displayMissedTranslations = async (
   );
 
   if (
-    config.exitErrorOnMissed &&
+    config.failOnMissed &&
     missedTranslations.totalStaticCount + missedTranslations.totalDynamicCount >
       0
   ) {
