@@ -14,6 +14,7 @@ import {
 
 import { resolveFile } from "../helpers/files";
 import { generateTranslationsFlatKeys } from "../helpers/flatKeys";
+import { extractTranslationUsages } from "../helpers/extractKeys";
 
 const replaceQuotes = (v: string): string => v.replace(/['"`]/gi, "");
 
@@ -57,7 +58,7 @@ interface unusedOptions {
   ignoreComments: boolean;
   localeFileParser?: ModuleResolver;
   localeFileLoader?: CustomFileLoader;
-  customChecker: CustomChecker;
+  customChecker?: CustomChecker;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
 }
@@ -94,12 +95,16 @@ export const collectUnusedTranslations = async (
 
     srcFilesPaths.forEach((filePath: string) => {
       const file = readFileSync(filePath).toString();
-      const matchKeys =
-        (ignoreComments ? removeComments(file) : file).match(
-          translationKeyMatcher,
-        ) || [];
+      const content = ignoreComments ? removeComments(file) : file;
+      const { allKeys } = extractTranslationUsages(
+        content,
+        translationKeyMatcher,
+      );
+      const matchKeys = translationKeyMatcher
+        ? content.match(translationKeyMatcher) || []
+        : [];
 
-      const matchKeysSet = new Set(matchKeys);
+      const matchKeysSet = new Set([...matchKeys, ...allKeys]);
 
       if (customChecker) {
         customChecker(matchKeysSet, translationsKeys);
@@ -107,7 +112,7 @@ export const collectUnusedTranslations = async (
         const matchKeysSetArrStr = [...matchKeysSet].toString();
 
         [...translationsKeys].forEach((key) => {
-          if (matchKeysSetArrStr.includes(key)) {
+          if (matchKeysSet.has(key) || matchKeysSetArrStr.includes(key)) {
             translationsKeys.splice(translationsKeys.indexOf(key), 1);
           }
         });
@@ -136,7 +141,7 @@ interface missedOptions {
   localeFileLoader?: CustomFileLoader;
   excludeTranslationKey?: string | string[];
   translationKeyMatcher?: TranslationKeyMatcher;
-  missedTranslationParser: MissedTranslationParser;
+  missedTranslationParser?: MissedTranslationParser;
 }
 
 export const collectMissedTranslations = async (
@@ -183,25 +188,61 @@ export const collectMissedTranslations = async (
       acc[filePath] = acc[filePath] || [];
 
       const file = readFileSync(filePath).toString();
+      const content = ignoreComments ? removeComments(file) : file;
 
-      const matchKeys = (
-        (ignoreComments ? removeComments(file) : file).match(
-          translationKeyMatcher,
-        ) || []
-      )
-        .map((v) => {
-          if (typeof missedTranslationParser === "function") {
-            return missedTranslationParser(v);
+      const { usages } = extractTranslationUsages(
+        content,
+        translationKeyMatcher,
+      );
+
+      const missedKeys: string[] = [];
+
+      for (const usage of usages) {
+        const isPresent = usage.candidates.some((c) =>
+          flatKeys.includes(replaceQuotes(c)),
+        );
+        if (!isPresent) {
+          const reportedCandidate = usage.candidates[0] || usage.rawKey;
+          if (usage.isDynamic) {
+            missedKeys.push(reportedCandidate);
+          } else {
+            missedKeys.push(`"${reportedCandidate}"`);
           }
+        }
+      }
 
-          const [, translation] = v.match(missedTranslationParser) || [];
+      if (translationKeyMatcher) {
+        const customMatches = (content.match(translationKeyMatcher) || [])
+          .map((v) => {
+            if (typeof missedTranslationParser === "function") {
+              return missedTranslationParser(v);
+            }
 
-          return translation;
-        })
-        .filter((v) => v && !flatKeys.includes(replaceQuotes(v)));
+            const [, translation] = v.match(missedTranslationParser) || [];
 
-      if (matchKeys.length) {
-        acc[filePath].push(...matchKeys);
+            return translation;
+          })
+          .filter((v) => {
+            if (!v) return false;
+            const cleaned = replaceQuotes(v);
+            const alreadyProcessed = usages.some(
+              (u) =>
+                u.rawKey === cleaned || u.candidates.some((c) => c === cleaned),
+            );
+            return (
+              !alreadyProcessed &&
+              !flatKeys.includes(cleaned) &&
+              !missedKeys.some((mk) => replaceQuotes(mk) === cleaned)
+            );
+          });
+
+        if (customMatches.length) {
+          missedKeys.push(...customMatches);
+        }
+      }
+
+      if (missedKeys.length) {
+        acc[filePath].push(...missedKeys);
       }
 
       return acc;
@@ -212,12 +253,20 @@ export const collectMissedTranslations = async (
       return;
     }
 
-    const staticKeys = filesMissedTranslationsKeys[filePath]
-      .filter(isStaticKey)
-      .map(replaceQuotes);
-    const dynamicKeys = filesMissedTranslationsKeys[filePath]
-      .filter(isDynamicKey)
-      .map(replaceQuotes);
+    const staticKeys = [
+      ...new Set(
+        filesMissedTranslationsKeys[filePath]
+          .filter(isStaticKey)
+          .map(replaceQuotes),
+      ),
+    ];
+    const dynamicKeys = [
+      ...new Set(
+        filesMissedTranslationsKeys[filePath]
+          .filter(isDynamicKey)
+          .map(replaceQuotes),
+      ),
+    ];
 
     translations.push({
       filePath,
