@@ -44,6 +44,18 @@ export type CustomChecker = (
   translationsKeys: string[],
 ) => void;
 
+export interface KeyUsage {
+  raw: string;
+  rawKey: string;
+  candidates: string[];
+  isDynamic: boolean;
+}
+
+export interface ExtractKeysResult {
+  usages: KeyUsage[];
+  allKeys: Set<string>;
+}
+
 export interface RunOptions {
   /**
    * Path to the locales folder
