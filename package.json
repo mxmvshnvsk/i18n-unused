@@ -9,6 +9,7 @@
   "module": "dist/i18n-unused.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "types": "./dist/index.d.ts",
     "require": "./dist/i18n-unused.cjs",
     "import": "./dist/i18n-unused.js"
   },
